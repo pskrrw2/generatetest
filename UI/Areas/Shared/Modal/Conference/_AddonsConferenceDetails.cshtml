@@ -1,0 +1,86 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    var isUpcomingConfernce = DateTimeOffset.UtcNow.AddDays(5) < Model.ConferenceDate;
+    int q = 1;
+    var disableyes = string.Empty;
+    if (Model.IsAdmin || !isUpcomingConfernce || Model.Action == "View")
+    {
+        disableyes = "disabled-input";
+    }
+}
+
+<div class="col-xl-12">
+    <div class="card mb-6">
+        <div class="card-header p-0">
+            <div class="nav-align-top">
+                <ul class="nav nav-pills mb-4 nav-fill" role="tablist" style="padding: 5px; border-radius: 10px 10px 0px 0px; box-shadow: 0 0.25rem 0.875rem 0 rgba(38, 43, 67, 0.16);">
+                    @foreach (var menuItem in Model?.AddOnMasterModels?.Select(x => x.Menu).Distinct().Select((menu, index) => new { menu, index }))
+                    {
+                        var targetBs = $"#menu-{menuItem?.menu?.Replace(" ", "-")}";
+                        <li class="nav-item mb-1 mb-sm-0">
+                            <button type="button" class="nav-link @(menuItem?.index == 0 ? "active" : "")"
+                                    role="tab"
+                                    style="border: 1px solid var(--bs-primary)"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="@targetBs"
+                                    aria-controls="menu-@menuItem?.menu?.Replace(" ", "-")"
+                                    aria-selected="@(menuItem?.index == 0 ? "true" : "false")">
+                                @menuItem?.menu
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="card-body pt-5">
+            <div class="tab-content p-0">
+                @foreach (var menuItem in Model.AddOnMasterModels.Select(x => x.Menu).Distinct().Select((menu, index) => new { menu, index }))
+                {
+                    var tabPaneId = $"menu-{menuItem?.menu?.Replace(" ", "-")}";
+                    <div class="tab-pane fade @(menuItem?.index == 0 ? "show active" : "")"
+                         id="@tabPaneId"
+                         role="tabpanel">
+                        <div class="row">
+                            @foreach (var category in Model.AddOnMasterModels.Where(x => x.Menu == menuItem?.menu).Select(x => x.CategoryName).Distinct())
+                            {
+                                <h6>@category</h6>
+                                @foreach (var item in Model.AddOnMasterModels.Where(x => x.Menu == menuItem?.menu && x.CategoryName == category))
+                                {
+                                    var isChecked = Model.SelectedAddOnIds != null && Model.SelectedAddOnIds.Contains(item.Id);
+                                    var AddonId = $"AddOnMasterModels_" + @q + "_Id";
+                                    <div class="mb-6 col-lg-4 col-xl-4 col-12 mb-0">
+                                        <div class="form-check custom-option custom-option-basic @disableyes">
+                                            <label class="form-check-label custom-option-content" for="@AddonId">
+                                                <input name="SelectedAddOnIds" class="form-check-input me-2" style="margin-left: 0px; margin-inline-start: 0px;" type="checkbox" value="@item.Id" id="@AddonId" @(isChecked ? "checked" : "") />
+                                                <span class="custom-option-header">
+                                                    <div class="col-8">
+                                                        @item.FoodItem
+                                                        @if (item.Quantity != 0)
+                                                        {
+                                                            <div><small class="text-muted">(Qty: @item.Quantity) (Price /Each)</small></div>
+                                                        }
+                                                        <div>
+                                                            <small class="text-muted"></small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4" style="text-align: end">
+                                                        <small class="text-muted">@item.FoodType</small>
+                                                        <span class="badge rounded-pill bg-label-primary">$@item.Price</span>
+                                                    </div>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    q++;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

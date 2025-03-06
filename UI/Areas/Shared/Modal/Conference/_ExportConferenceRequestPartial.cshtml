@@ -1,0 +1,140 @@
+﻿@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    var fileName = $"{Model.ConferenceId}-{Model.SuiteType.Replace(" ", "").Replace(".", "")}-{Model.ExecutiveName?.Replace(" ", "")}-{Model.CreatedDate?.ToString("MM/dd/yyyy").Replace("/", "")}";
+}
+
+<div id="printRequestData">
+
+    <div class="d-flex justify-content-between flex-row">
+        <div>
+            <h5 class="mb-2">Event Request</h5>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="pe-4"><strong>Requested By</strong>:</td>
+                        <td>@Model.ExecutiveName</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4"><strong>Requested On</strong>:</td>
+                        <td>@Model.CreatedDate?.ToString("MM/dd/yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr class="my-6" />
+    <div id="no-break-please">
+        <div>
+            <h5><strong>1. Conference Suite & Date</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="pe-4"><strong>Conference Suite </strong>:</td>
+                            <td>@Model.SuiteType</td>
+                        </tr>
+                        <tr>
+                            <td class="pe-4"><strong>Conference Date</strong>:</td>
+                            <td>@Model.ConferenceDate?.ToString("MM/dd/yyyy")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+    <hr class="my-6" />
+    <div class="no-break-please">
+        <div>
+            <h5><strong>2. Food Package</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="pe-4"><strong>Package Selected</strong>:</td>
+                            <td>@Model.PackageSelected</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr class="my-6" />
+    <div class="no-break-please">
+        <div>
+            <h5><strong>3. Attendees Detais</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div class="table-responsive border border-bottom-0 rounded" style="width:100%;">
+                <table class="print-it-bordered table m-0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Mobile Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.AttendeeModels != null)
+                        {
+                            foreach (var attendee in Model.AttendeeModels)
+                            {
+                                <tr>
+                                    <td>@attendee.AttendeeName</td>
+                                    <td>@attendee.AttendeeEmail</td>
+                                    <td>@attendee.AttendeeMobileNumber</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr class="my-6" />
+    <div class="no-break-please">
+        <div>
+            <h5><strong>4. Add-Ons Selected</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div class="table-responsive border border-bottom-0 rounded" style="width:100%;">
+                <table class="print-it-bordered table m-0">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.AddOnMasterModels != null)
+                        {
+                            foreach (var addOn in Model.AddOnMasterModels)
+                            {
+                                string quantity = addOn.Quantity != 0 ? $"(Qty : {addOn.Quantity} (Price /Each))" : string.Empty;
+                                <tr>
+                                    <td>@addOn.FoodItem</td>
+                                    <td>@addOn.Price  <div><small class="text-muted">@quantity</small></div></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex mb-4 justify-content-center">
+    <a class="btn btn-outline-secondary d-grid me-4 waves-effect print-btn jsPrintOut" id="printBtn">
+        Print
+    </a>
+    <a class="print-btn btn btn-outline-secondary d-grid waves-effect jsDownloadPdf" data-fileName="@fileName" id="downloadBtn">
+        Download
+    </a>
+</div>

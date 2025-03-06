@@ -1,0 +1,267 @@
+﻿@page "/dashboard"
+@model ExecutiveDashboardModel
+@using Domain.Common.Const;
+@using Domain.Common.Enums
+@using System.Globalization
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Dashboard";
+}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div>
+            <div class="row gy-6 mb-6">
+                <!-- Event Request Overview-->
+                <div class="col-lg-6 mb-6">
+                    <div class="swiper-container swiper-container-horizontal swiper swiper-sales" id="swiper-weekly-sales">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide card pb-5 shadow-none border-0">
+                                <h5 class="mb-1">Event Request Overview</h5>
+                                <div class="d-flex align-items-center card-subtitle gap-2">
+                                    <div>Everything related to Event Requests</div>
+                                </div>
+                                <div class="d-flex align-items-center mt-5">
+                                    <div class="d-flex flex-column w-100">
+                                        <div class="row d-flex flex-wrap justify-content-between g-4">
+                                            <div class="col-sm-6">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="d-flex mb-3 align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.TotalRequest</p>
+                                                        <p class="mb-0 text-truncate">Total Requests</p>
+                                                    </li>
+                                                    <li class="d-flex align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.PendingRequest</p>
+                                                        <p class="mb-0 text-truncate">Pending</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="d-flex mb-3 align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.ApproveRequest</p>
+                                                        <p class="mb-0 text-truncate">Approved</p>
+                                                    </li>
+                                                    <li class="d-flex align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.RejectRequest</p>
+                                                        <p class="mb-0 text-truncate">Rejected</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gy-3 mt-4">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <button class="btn btn-outline-primary w-100 me-4" onclick="window.location.href='/my-requests'">
+                                            <i class="tf-icons ri-function-line ri-20px me-1"></i> View Event Requests
+                                        </button>
+                                        @*   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportRequestData">
+                                            Send Notification
+                                        </button> *@
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <button title="Create Request" data-action="@Url.PageLink(PageNames.EventRequest, "EventRequest", new { area = WebAreas.Executive })"
+                                                class="jsCreateRequest btn btn-primary me-4 w-100 waves-effect waves-light add-new-role">
+                                            <i class="tf-icons ri-function-add-line ri-20px me-1"></i>New Event Request
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <!--/ Event Request Overview-->
+                <!-- Event Request Overview-->
+                <div class="col-lg-6 mb-6">
+                    <div class="swiper-container swiper-container-horizontal swiper swiper-sales" id="swiper-weekly-sales">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide card pb-5 shadow-none border-0">
+                                <h5 class="mb-1">Conference Request Overview</h5>
+                                <div class="d-flex align-items-center card-subtitle gap-2">
+                                    <div>Everything related to Conference Requests</div>
+                                </div>
+                                <div class="d-flex align-items-center mt-5">
+                                    <div class="d-flex flex-column w-100">
+                                        <div class="row d-flex flex-wrap justify-content-between g-4">
+                                            <div class="col-sm-6">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="d-flex mb-3 align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.TotalConferenceRequest</p>
+                                                        <p class="mb-0 text-truncate">Total Requests</p>
+                                                    </li>
+                                                    <li class="d-flex align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.PendingConferenceRequest</p>
+                                                        <p class="mb-0 text-truncate">Pending</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="d-flex mb-3 align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.ApproveConFerenceRequest</p>
+                                                        <p class="mb-0 text-truncate">Approved</p>
+                                                    </li>
+                                                    <li class="d-flex align-items-center">
+                                                        <p class="mb-0 me-3 sales-text-bg fw-medium">@Model.RejectConferenceRequest</p>
+                                                        <p class="mb-0 text-truncate">Rejected</p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gy-3 mt-4">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <button class="btn btn-outline-primary w-100 me-4" onclick="window.location.href='/conference-request'">
+                                            <i class="tf-icons ri-function-line ri-20px me-1"></i> View Conference Requests
+                                        </button>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
+                                        <button class="btn btn-primary me-4 w-100 waves-effect waves-light" onclick="window.location.href='/create-conference-request'">
+                                            <i class="tf-icons ri-function-add-line ri-20px me-1"></i> New Conference Request
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <!--/ Event Request Overview-->
+            </div>
+            <div class="card mb-6">
+                <div class="card-header d-flex flex-wrap justify-content-between gap-4">
+                    <div class="card-title mb-0 me-1">
+                        <h5 class="mb-0">Latest Requests</h5>
+                        @* <p class="mb-0 text-body">
+                            Latest three requests made by you
+                        </p> *@
+                    </div>
+                    <div class="d-flex justify-content-md-end align-items-center gap-6 flex-wrap">
+                        <a href="/my-requests" class="btn btn-primary">
+                            All Requests
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-datatable table-responsive">
+                        <table class="table" id="executiveDashboardTable">
+                            <thead>
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Event Name</th>
+                                    <th class="text-center">Requested Tickets</th>
+                                    <th class="text-center">Requested Parking Passes</th>
+                                    <th class="text-center">SRO Tickets</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            @if (Model?.RequestsModels?.Count() > 0)
+                            {
+
+                                @await Html.PartialAsync("~/Areas/Shared/Modal/_EventRequestPartial.cshtml", Model.RequestsModels)
+                            }
+                            else
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="text-center"><label>No data available in table</label></td>
+                                    </tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-6">
+                <div class="card-header d-flex flex-wrap justify-content-between gap-4">
+                    <div class="card-title mb-0 me-1">
+                        <h5 class="mb-0">Upcoming Events</h5>
+                        <p class="mb-0 text-body">Upcoming events this season</p>
+                    </div>
+                    <div class="d-flex justify-content-md-end align-items-center gap-6 flex-wrap">
+                        <a href="/explore-events" class="btn btn-primary">
+                            All Events
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body mt-1">
+                    <div class="row gy-6 mb-6">
+                        @foreach (var events in Model.MatchEvent)
+                        {
+                            var isUpcomingEvent = DateTimeOffset.UtcNow < events.EventDate;
+                            <div class="col-12 col-xxl-4 col-lg-4 mb-4">
+                                <div class="card">
+                                    <img class="card-img-top" src="@events.EventThumbnail" style="height: 200px; object-fit: cover;" alt="Event Thumbnail">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-start justify-content-between mb-2">
+                                            <div>
+                                                <h5 class="mb-1">@events.EventName</h5>
+                                                <p class="fw-medium small">@events.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @events.EventTime</p>
+                                            </div>
+                                            <div>
+                                                @if (isUpcomingEvent)
+                                                {
+                                                    <div class="badge bg-label-success rounded-pill me-4 mt-2">Upcoming</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="badge bg-label-danger rounded-pill mt-2">
+                                                        Expired
+                                                        <span class="d-inline-block ms-1" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Requests cannot be made for past events.">
+                                                            <i class="tf-icons ri-information-line"></i>
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <ul class="p-0 m-0 mb-6" style="border: 1px solid var(--bs-border-color); padding: 10px !important; border-radius: var(--bs-border-radius-lg);">
+                                            <li class="d-flex">
+                                                <div class="avatar flex-shrink-0 me-3">
+                                                    <span class="avatar-initial rounded-3 bg-label-primary"><i class="ri-coupon-2-line ri-24px"></i></span>
+                                                </div>
+                                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                                    <div class="me-2">
+                                                        <h6 class="mb-0 fw-normal">Available Tickets</h6>
+                                                    </div>
+                                                    <div class="user-progress">
+                                                        <h6 class="mb-0">@events.EventTotalTickets</h6>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="mb-4">
+                                            @{
+                                                var getEventHandler = Url.PageLink(PageNames.EventRequest, "DashboardPartial", new
+                                                {
+                                                    area = WebAreas.Executive,
+                                                    eventId = events.EventId
+                                                });
+                                            }
+                                            <button type="button" title="Create Request" data-action="@getEventHandler" class="btn btn-primary w-100 jsCreateRequest @(isUpcomingEvent ? "" : "disabled")">
+                                                <span class="me-2">Create Request</span><i class="ri-arrow-right-line ri-16px lh-1 scaleX-n1-rtl"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Upcoming Event -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <!-- Footer -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+</div>

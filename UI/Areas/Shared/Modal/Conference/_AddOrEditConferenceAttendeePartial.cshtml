@@ -1,0 +1,95 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    var hideshow = string.Empty;
+    var isDisabled = string.Empty;
+    var marginTop = string.Empty;
+    var isUpcomingEvent = DateTimeOffset.UtcNow < Model.ConferenceDate;
+    if (Model.Action == "View" || !isUpcomingEvent)
+    {
+        isDisabled = "disabled-input";
+        hideshow = "no-displayview";
+        marginTop = "mt-4";
+    }
+
+    var totalSuiteSeat = Model.SuiteType switch
+    {
+        Constants.OurSuiteDisplayName => Constants.OurSuiteConference,
+        Constants.StageSuiteDisplayName => Constants.StageSuiteConference,
+        Constants.OwnersConferenceSpaceDisplayName => Constants.OwnerSuiteConference,
+        _ => 0
+    };
+}
+
+<form class="needs-validation formclass jsAttendeeForm" novalidate method="post" asp-area="Executive" asp-page="/CreateOrUpdateAttendee" asp-page-handler="GuestSubmitForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="isConference" value="True" />
+    <input type="hidden" asp-for="ConferenceId" />
+    <input type="hidden" asp-for="IsAdmin" />
+    <input type="hidden" asp-for="ExecutiveId" />
+    <input type="hidden" value="@totalSuiteSeat" class="jsTotalSeatSuite" />
+    <h5 class="bg-success p-2 @hideshow" style="--bs-bg-opacity: .5; border-radius: 10px; font-size: 15px;">You are only approved for @totalSuiteSeat seats.</h5>
+
+    <div class="form-repeater">
+        <div id="attendee-container" class="attendee-row" data-attendees='@Html.Raw(Json.Serialize(Model.AttendeeModels))'>
+            <!-- Dynamic attendee rows will be appended here -->
+        </div>
+
+        <span id="ticket-message" class="text-danger"></span>
+        <div class="row mb-4" style="margin-left: 0px; margin-right: 0px; justify-content: space-between;">
+            <button type="button" id="add-attendee" style="width:auto;" class="btn btn-primary jsAddAttendee @hideshow @isDisabled">
+                <i class="ri-add-line me-1"></i>
+                <span class="align-middle">Add</span>
+            </button>
+            <button type="submit" style="width:auto;" class="btn btn-primary btn-submit @hideshow">Submit</button>
+        </div>
+    </div>
+
+
+    <template id="attendee-template">
+        <div class="col-md attendee-row" data-attendee-index="{index}">
+            <div class="card mb-6">
+                <div class="card-header header-elements @hideshow" style="padding: 10px 15px;">
+                    <div class="card-header-elements ms-auto">
+                        <button type="button" class="btn btn-xs btn-outline-danger delete-attendee">Delete</button>
+                    </div>
+                </div>
+                <div class="card-body" style="padding-bottom: 0px;">
+                    <div class="row">
+                        <input type="hidden" name="attendeemodels[{index}].attendeeid" value="{attendeeid}" />
+                        <input type="hidden" name="attendeemodels[{index}].conferenceid" value="@Model.ConferenceId" />
+                        <input type="hidden" name="attendeemodels[{index}].key" class="jsHdnKey" />
+                        <input type="hidden" name="attendeemodels[{index}].iv" class="jsHdnIV" />
+                        <div class="@marginTop mb-4 col-lg-4 col-xl-4 col-12">
+                            <div class="form-floating form-floating-outline @isDisabled">
+                                <input type="text" name="attendeemodels[{index}].attendeename" class="form-control jsAttendeeName" value="{attendeename}" placeholder="john doe" />
+                                <label for="form-repeater-1-1">Name</label>
+                            </div>
+                        </div>
+                        <div class="@marginTop mb-4 col-lg-4 col-xl-4 col-12">
+                            <div class="form-floating form-floating-outline @isDisabled">
+                                <input type="text" name="attendeemodels[{index}].attendeeemail" class="form-control" value="{attendeeemail}" placeholder="email@example.com" />
+                                <label for="form-repeater-1-2">Email</label>
+                            </div>
+                        </div>
+                        <div class="@marginTop mb-4 col-lg-4 col-xl-4 col-12">
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text">US (+1)</span>
+                                <div class="form-floating form-floating-outline @isDisabled">
+                                    <input type="text" name="attendeemodels[{index}].attendeemobilenumber" class="form-control phone-number-mask" value="{attendeemobilenumber}" placeholder="202 555 0111" />
+                                    <label for="form-repeater-1-3">Phone number</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</form>
+
+
+
+

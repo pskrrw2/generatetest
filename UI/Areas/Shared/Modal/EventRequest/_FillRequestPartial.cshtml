@@ -1,0 +1,169 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using System.Globalization
+@using static UI.Areas.Executive.Pages.CreateRequestModel
+@model RequestModel
+@{
+    int totalBothSROandTickets = (Model.ApprovedTickets ?? 0) + (Model.ApprovedSROTickets);
+    var matchEvents = Model?.EventMatchModels?.ToList();
+}
+<style>
+    .no-displayview {
+        display: none !important;
+    }
+
+    .displayview {
+        display: block !important;
+    }
+
+    .disabled-input {
+        opacity: 1;
+    }
+</style>
+<form class="needs-validation formclass jsEventRequestForm" novalidate method="post" asp-area="Executive" asp-page="/CreateOrUpdateAttendee" asp-page-handler="GuestSubmitForm">
+    @* <form id="jsAttendeeForm">  *@
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="isConference" value="False" />
+    <input type="hidden" value="@totalBothSROandTickets" class="jsApproveTicket" />
+    <input type="hidden" asp-for="ApprovedTickets" />
+    <input type="hidden" asp-for="AppliedTickets" />
+    <input type="hidden" asp-for="RequestId" />
+    <input type="hidden" asp-for="AppliedSROTicket" />
+    <input type="hidden" asp-for="ApprovedSROTickets" />
+    <input type="hidden" asp-for="IsAdmin" />
+    <input type="hidden" asp-for="ExecutiveId" />
+    <input type="hidden" asp-for="action" value="fill" />
+    @for (var i = 0; i < matchEvents?.Count(); i++)
+    {
+        <input type="hidden" name="EventMatchModels[@i].AvailableSeat" value="@matchEvents[i].AvailableSeat" />
+        <input type="hidden" name="EventMatchModels[@i].AvailableParking" value="@matchEvents[i].AvailableParking" />
+        <input type="hidden" name="EventMatchModels[@i].AvailableSROSeat" value="@matchEvents[i].AvailableSROSeat" />
+        <input type="hidden" name="EventMatchModels[@i].EventName" value="@matchEvents[i].EventName" />
+        <input type="hidden" name="EventMatchModels[@i].EventId" value="@matchEvents[i].EventId" />
+        <input type="hidden" name="EventMatchModels[@i].EventDate" value="@matchEvents[i].EventDate" />
+        <input type="hidden" name="EventMatchModels[@i].EventTotalTickets" value="@matchEvents[i].EventTotalTickets" />
+    }
+    <div class="bs-stepper wizard-numbered mt-2">
+        <div class="bs-stepper-header" style="justify-content: center;">
+            <div class="step active" data-target="#request-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">01</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Request Details</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#package-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">02</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Food Package</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#addons-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">03</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Add-Ons</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#invitees-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">04</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Invitees Info</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="bs-stepper-content">
+            <!-- Request Details -->
+            <div id="request-details" class="content active dstepper-block ">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Request Details</h6>
+                    <small>Overview of Created Request</small>
+                </div>
+                <div class="row g-5">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/EventRequest/_ViewEventRequestPartial.cshtml", Model)
+                    <div class="col-12 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary btn-prev" disabled>
+                            <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ri-arrow-right-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Food Package -->
+            <div id="package-details" class="content">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Food Package</h6>
+                    <small>Select the food package for your request</small>
+                </div>
+                <div class="row g-5">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/EventRequest/_PackageDetails.cshtml", Model)
+                    <div class="col-12 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary btn-prev">
+                            <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ri-arrow-right-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Addons -->
+            <div id="addons-details" class="content">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Add-Ons</h6>
+                    <small>If you want to choose your own catering items, select them here</small>
+                </div>
+                <div class="row g-5">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/EventRequest/_AddonsDetails.cshtml", Model)
+                    <div class="col-12 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary btn-prev">
+                            <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ri-arrow-right-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invitees Info -->
+            <div id="invitees-details" class="content">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Invitees Info</h6>
+                    <small>Enter invitees info here.</small>
+                </div>
+                @await Html.PartialAsync("~/Areas/Shared/Modal/EventRequest/_AddOrEditAttendeePartial.cshtml", Model)
+                <div class="col-12 d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary btn-prev">
+                        <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                        <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/js/site.js" asp-append-version="true"></script>

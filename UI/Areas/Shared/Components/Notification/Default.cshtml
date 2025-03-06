@@ -1,0 +1,169 @@
+﻿@using Domain.Common.Enums
+@model List<NotificationViewComponentVM>
+
+<!-- Notification -->
+
+<li class="nav-item dropdown-notifications navbar-dropdown dropdown me-2 me-xl-1">
+    <a class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+        <i class="ri-notification-2-line ri-22px"></i>
+        <span class="position-absolute top-0 start-50 translate-middle-y badge badge-dot bg-danger mt-2 border"></span>
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end py-0">
+        @if (Model.Count is 0)
+        {
+            <li class="dropdown-menu-header border-bottom py-50">
+                <div class="dropdown-header d-flex align-items-center py-2">
+                    <h6 class="mb-0 me-auto">No new notifications</h6>
+                </div>
+            </li>
+        }
+        else
+        {
+
+            <li class="dropdown-menu-header border-bottom py-50">
+                <div class="dropdown-header d-flex align-items-center py-2">
+                    <h6 class="mb-0 me-auto">Notification</h6>
+                    <div class="d-flex align-items-center">
+                        <span class="badge rounded-pill bg-label-primary fs-xsmall me-2">
+                            @if (Model.FirstOrDefault()?.IsAdmin == true)
+                            {
+                                @Model.FirstOrDefault()?.PendingRequest
+                            }
+                            else
+                            {
+                                @Model.FirstOrDefault()?.ApproveRequest
+                            }
+                        </span>
+                        <a href="javascript:void(0)" class="btn btn-text-secondary rounded-pill btn-icon dropdown-notifications-all" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read">
+                            <i class="ri-mail-open-line text-heading ri-20px"></i>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            <li class="dropdown-notifications-list scrollable-container">
+                @foreach (var item in Model)
+                {
+                    var isUpcomingEvent = DateTimeOffset.UtcNow < (item.RequestId != 0 ? item.EventDate : item.ConferenceDate);
+                    TimeSpan timeSinceCreation = DateTimeOffset.UtcNow - item.CreatedDate!.Value;
+                    if (timeSinceCreation.TotalDays >= 2)
+                    {
+                        continue;    
+                    }
+
+                    if (isUpcomingEvent)
+                    {
+                        var getApprovedHandler = string.Empty;
+                        var getRejectHandler = string.Empty;
+
+                        TimeSpan timeSpan = DateTimeOffset.UtcNow - item.CreatedDate!.Value;
+                        var setTime = timeSpan switch
+                        {
+                            { TotalMinutes: < 1 } => "Just now",
+                            { TotalMinutes: < 60 } => $"{(int)timeSpan.TotalMinutes} Minutes ago",
+                            { TotalHours: < 24 } => $"{(int)timeSpan.TotalHours} Hours ago",
+                            { TotalDays: < 30 } => $"{(int)timeSpan.TotalDays} Days ago",
+                            _ => Constants.ConvertUtcToPst(item.CreatedDate)?.ToString("MMMM dd, yyyy")!
+                        };
+
+                        if (item.IsAdmin && item.Status is nameof(StatusType.Pending))
+                        {
+                            if (item.RequestId != 0)
+                            {
+                                getApprovedHandler = Url.PageLink(PageNames.DashboardAdmin, "AdminDashboardPartial", new
+                                {
+                                    area = WebAreas.Administration,
+                                    requestId = item.RequestId,
+                                    eventId = item.EventId,
+                                    action = "Approved"
+                                });
+
+                                getRejectHandler = Url.PageLink(PageNames.DashboardAdmin, "AdminDashboardPartial", new
+                                {
+                                    area = WebAreas.Administration,
+                                    requestId = item.RequestId,
+                                    eventId = item.EventId,
+                                    action = "Reject"
+                                });
+                            }
+                            else if (item.ConferenceId != 0)
+                            {
+                                getApprovedHandler = Url.PageLink(PageNames.Conferences, "AdminConferenceApproveReject", new
+                                {
+                                    area = WebAreas.Executive,
+                                    conferenceId = item.ConferenceId,
+                                    executiveName = item.ExecutiveName,
+                                    action = "Approved"
+                                });
+
+                                getRejectHandler = Url.PageLink(PageNames.Conferences, "AdminConferenceApproveReject", new
+                                {
+                                    area = WebAreas.Executive,
+                                    conferenceId = item.ConferenceId,
+                                    executiveName = item.ExecutiveName,
+                                    action = "Reject"
+                                });
+                            }
+                        }
+
+                        var heading = item switch
+                        {
+                            { IsAdmin: true, Status: nameof(StatusType.Pending) } => $"{item.ExecutiveName} has created the {(item.RequestId == 0 ? "Conference" : "")} request for {(item.RequestId != 0 ? item.EventName : item?.SuiteType)}",
+                            { IsAdmin: false, Status: nameof(StatusType.Rejected) } => $"The admin have rejected your {(item.RequestId == 0 ? "Conference" : "")} request for {(item.RequestId != 0 ? item.EventName : item.SuiteType)}",
+                            { IsAdmin: false, Status: nameof(StatusType.Approved) } => $"The admin has approved your {(item.RequestId == 0 ? "Conference" : "")} request for {(item.RequestId != 0 ? item.EventName : item?.SuiteType)}. Please fill in the requested details",
+                            { IsAdmin: true } when item?.AttendeeId != 0 => $"{item?.ExecutiveName} has created the Guest List {(item.RequestId == 0 ? "Conference" : "")} request",
+                            { IsAdmin: true } when item?.AttendeeId != 0 && (item?.PackageSelected != null || item?.AddOns != null) => $"{item.ExecutiveName} has filled the {(item.RequestId == 0 ? "Conference" : "")} request for {(item.RequestId != 0 ? item.EventName : item?.SuiteType)}",
+                            _ => string.Empty
+                        };
+
+                        <ul class="list-group list-group-flush">
+                            <!-- Notifications List -->
+                            @if (!string.IsNullOrEmpty(heading) && item?.IsAdmin == true && (item.Status == nameof(StatusType.Pending)))
+                            {
+                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="avatar">
+                                                <img src="/img/avatars/1.png" class="rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <label><small>@heading  (<strong>@(item?.RequestId != 0 ? "Event" : "Conference") Date:</strong> @(item?.RequestId != 0 ? item?.EventDate?.ToString("MMMM dd, yyyy") : item?.ConferenceDate?.ToString("MMMM dd, yyyy")))</small></label>
+                                            <small class="mb-1 d-block text-body">
+                                                <a href="javascript:void(0);" title="Approve Request" data-action="@getApprovedHandler" class="btn btn-xs rounded-pill btn-label-success jsApproveRequest">Approve</a>
+                                                <a href="javascript:void(0);" title="Reject Request" data-action="@getRejectHandler" class="btn btn-xs rounded-pill btn-label-danger jsRejectRequest">Reject</a>
+                                            </small>
+                                            @* <small class="d-block text-body">@Html.Raw(@item.IsAdmin ? @item.ExecutiveName : "")</small> *@
+                                            <small class="text-muted">(@setTime)</small>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else if ((item?.IsAdmin == false && item.Status != nameof(StatusType.Pending)) || (item?.Status == nameof(StatusType.Approved) && item?.AttendeeId != 0))
+                            {
+                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="avatar">
+                                                <img src="/img/avatars/1.png" class="rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <label><small>@heading  (<strong>@(item?.RequestId != 0 ? "Event" : "Conference") Date:</strong> @(item?.RequestId != 0 ? item?.EventDate?.ToString("MMMM dd, yyyy") : item?.ConferenceDate?.ToString("MMMM dd, yyyy")))</small></label>
+                                            @* <small class="d-block text-body">@Html.Raw(@item.IsAdmin ? @item.ExecutiveName : "")</small> *@
+                                            <small class="text-muted">(@setTime)</small>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            <!-- Additional Notifications... -->
+                        </ul>
+                    }
+                }
+
+            </li>
+        }
+
+    </ul>
+
+</li>

@@ -1,0 +1,16 @@
+﻿@model Domain.ViewModel.MailRequestVm
+
+@{
+    Layout = "EmailLayout.cshtml";
+}
+
+<h2>New Query from Executive</h2>
+
+<p><strong>Executive Name:</strong> @Model.ExecutiveName</p>
+<br />
+
+<p><strong>Message:</strong></p>
+<div style="font-size: 14px; margin-top: 10px;">
+    @Model.EventName
+</div>
+

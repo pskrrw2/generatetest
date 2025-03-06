@@ -1,0 +1,49 @@
+﻿@model Domain.ViewModel.MailRequestVm
+
+@{
+    Layout = "EmailLayout.cshtml";
+}
+
+<span class="preheader">@Model.Title</span>
+<table role="presentation"
+       border="0"
+       cellpadding="0"
+       cellspacing="0"
+       class="main">
+    <!-- START MAIN CONTENT AREA -->
+    <tr>
+        <td class="wrapper">
+            <p>Hi Executive,</p>
+            <p>
+                You are invited to login to suite management portal for creating suite request for events and matches.
+            </p>
+            <table role="presentation"
+                   border="0"
+                   cellpadding="0"
+                   cellspacing="0"
+                   class="btn btn-primary"
+                   style="margin-top: 35px">
+                <tbody>
+                    <tr>
+                        <td align="center">
+                            <table role="presentation"
+                                   border="0"
+                                   cellpadding="0"
+                                   cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="@Model.UrlPath" target="_blank">Go to portal</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    <!-- END MAIN CONTENT AREA -->
+</table>

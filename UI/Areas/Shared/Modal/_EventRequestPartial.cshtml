@@ -1,0 +1,142 @@
+﻿@model List<MyRequestsModels>
+@using Domain.Common.Const
+@using Domain.Common.Enums
+@using UI.Areas.Executive.Pages
+@using static UI.Areas.Executive.Pages.MyRequestsModel
+@{
+    var ttext = string.Empty;
+    var statusName = string.Empty;
+    int inc = 1;
+
+}
+
+<tbody>
+    @foreach (var items in Model)
+    {
+        var isUpcomingEvent = DateTimeOffset.UtcNow < items.EventDate;
+        var successFoodPRequest = "bg-error";
+        var successAddOnRequest = "bg-error";
+        var successAttendeeRequest = "bg-error";
+        var approvedTicket = string.Empty;
+        var approvedParkingPasses = string.Empty;
+        if (items.ApprovedTicket != 0)
+        {
+            approvedTicket = $"({items.ApprovedTicket})";
+            approvedParkingPasses = $"({items.ApprovedParking})";
+        }
+
+        ttext = items.Status switch
+        {
+            nameof(StatusType.Pending) => "text-warning",
+            nameof(StatusType.Rejected) => "text-danger",
+            nameof(StatusType.Approved) => "text-success",
+            _ => ""
+        };
+
+        statusName = items.Status switch
+        {
+            nameof(StatusType.Pending) => nameof(StatusType.Pending),
+            nameof(StatusType.Rejected) => nameof(StatusType.Rejected),
+            nameof(StatusType.Approved) => nameof(StatusType.Approved),
+            _ => ""
+        };
+
+        var getEventHandler = Url.PageLink(PageNames.EventRequest, "EditRequestByIdPartial", new
+        {
+            area = WebAreas.Executive,
+            requestId = items.RequestId,
+            action = "Edit"
+        });
+
+        var viewEventHandler = Url.PageLink(PageNames.EventRequest, "EditRequestByIdPartial", new
+        {
+            area = WebAreas.Executive,
+            requestId = items.RequestId,
+            action = "View"
+        });
+
+        var fillCateringEventHandler = Url.PageLink(PageNames.EventRequest, "EditRequestByIdPartial", new
+        {
+            area = WebAreas.Executive,
+            requestId = items.RequestId,
+            action = "Catering"
+        });
+
+        var fillGuestEventHandler = Url.PageLink(PageNames.EventRequest, "EditRequestByIdPartial", new
+        {
+            area = WebAreas.Executive,
+            requestId = items.RequestId,
+            action = "Guest"
+        });
+
+        var sroApproveValue = (items.SROPasses!.Value) ? items.ApprovedSROTicket != 0 ? $"({items.ApprovedSROTicket})" : "" : (items.Status == nameof(StatusType.Approved) && items.AppliedSROTickets != 0) ? $"({items.ApprovedSROTicket})" : "N/A";
+        var sroAppliedValue = items.SROPasses!.Value ? $"{items.AppliedSROTickets}" : string.Empty;
+
+        <tr>
+            <td class="text-center">@(inc++)</td>
+            <td>@items.EventName</td>
+            <td class="text-center">@items.RequestPasses <span style="color: green;">@approvedTicket</span></td>
+            <td class="text-center">@items.AppliedParkingPasses <span style="color: green;">@approvedParkingPasses</span></td>
+            <td class="text-center">
+                @sroAppliedValue  <span style="color: @(sroApproveValue == "N/A" ? "red" : "green");"> @sroApproveValue </span>
+            </td>
+            <td class="text-center">
+                <div class="d-flex" style="justify-content: center;">
+                    <h6 class="mb-0 d-flex align-items-center @ttext">
+                        <i class="ri-circle-fill ri-10px me-1"></i>@statusName
+                    </h6>
+                    @if (items.Status == nameof(StatusType.Approved))
+                    {
+
+                        <div class="d-flex align-items-center mx-4">
+                            @if (!string.IsNullOrEmpty(items.PackageSelected))
+                                successFoodPRequest = "bg-success";
+
+                            <div class="avatar avatar-sm me-2" style="cursor: default;">
+                                <span class="avatar-initial rounded-circle @successFoodPRequest" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Food Package"> <i class="ri-restaurant-2-fill"></i></span>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(items.AddOnSelected))
+                                successAddOnRequest = "bg-success";
+
+                            <div class="avatar avatar-sm me-2" style="cursor: default;">
+                                <span class="avatar-initial rounded-circle @successAddOnRequest" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Add-Ons Selection"><i class="ri-apps-2-add-fill"></i></span>
+                            </div>
+
+                            @if (items.Attendees?.Count() > 0)
+                                successAttendeeRequest = "bg-success";
+
+                            <div class="avatar avatar-sm me-2" style="cursor: default;">
+                                <span class="avatar-initial rounded-circle @successAttendeeRequest" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Attendee Details"><i class="ri-user-add-fill"></i></span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </td>
+            <td class="text-center">
+                <div>
+                    <button class="btn btn-sm btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow show" data-bs-toggle="dropdown" aria-expanded="true">
+                        <i class="ri-more-2-line ri-20px"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end m-0" style="position: absolute; inset: auto 0px 0px auto; margin: 0px; transform: translate3d(-69.6px, -227.2px, 0px);" data-popper-placement="top-end">
+                        <button title="View Request" data-action="@viewEventHandler" data-bs-dismiss="modal" class="dropdown-item jsViewEventRequest btn-card-block-spinner">
+                            View
+                        </button>
+                        @if (isUpcomingEvent)
+                        {
+                            if (items.Status == nameof(StatusType.Pending))
+                            {
+                                <button title="Edit Request" data-action="@getEventHandler" data-bs-dismiss="modal" class="dropdown-item jsCreateRequest btn-card-block-spinner">Edit</button>
+                            }
+                            if (items.Status == nameof(StatusType.Approved))
+                            {
+                                <button title="Catering Data" data-action="@fillCateringEventHandler" data-bs-dismiss="modal" class="dropdown-item jsFillCateringEventRequest btn-card-block-spinner">Fill Catering Data</button>
+                                <button title="Guest Data" data-action="@fillGuestEventHandler" data-bs-dismiss="modal" class="dropdown-item jsFillGuestEventRequest btn-card-block-spinner">Fill Guest List</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+</tbody>

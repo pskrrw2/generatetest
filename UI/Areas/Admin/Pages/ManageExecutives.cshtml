@@ -1,0 +1,60 @@
+﻿@page "/admin/manage-executives"
+@model ManageExecutivesModel
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Manage Executive";
+    int inc = 1;
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <div class="card-datatable table-responsive">
+                <table class="table" id="UserTable">
+                    <thead>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            @* <th>Mobile No.</th> *@
+                            <th class="text-center">Is Active</th>
+                            @* <th class="text-center">Mail Confirmed</th> *@
+                            <th class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            var IsActiveUserHandler = Url.PageLink(PageNames.ManageExecutives, "IsActiveUser", new
+                            {
+                                area = WebAreas.Administration,
+                            });
+                            var fullName = $"{user.FirstName}  {user.LastName}";
+                            <tr>
+                                <td>@(inc++)</td>
+                                <td>@fullName</td>
+                                <td>@user.Email</td>
+                                @* <td>@user.PhoneNumber</td> *@
+                                <td class="justify-content-center d-flex">
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" asp-for="@user.IsActive" data-id="@user.Id" class="form-check-input jsIsActiveExecutive btn-card-block-spinner" style="width:35px;" data-action="@IsActiveUserHandler" />
+                                    </div>
+                                </td>
+                                @* <td class="text-center">@Html.Raw(Constants.GetIcon(user.EmailConfirmed))</td> *@
+                                <td></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(function () {
+            UserPage.init();
+        });
+    </script>
+}
+

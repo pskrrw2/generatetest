@@ -1,0 +1,155 @@
+﻿@page "/my-requests"
+@model MyRequestsModel
+@using Domain.Common.Const;
+@using Domain.Common.Enums
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "My Requests";
+    var ttext = string.Empty;
+    var statusName = string.Empty;
+}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row g-6 mb-6">
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <div class="card h-100">
+                    <div class="row h-100">
+                        <div class="col-3">
+                            <div class="d-flex align-items-end h-100 justify-content-center">
+                                <img src="~/img/illustrations/add-new-role-illustration.png" class="img-fluid"
+                                     alt="Image" width="68" />
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="card-body text-sm-end text-end ps-sm-0">
+                                <button title="Create Request" data-action="@Url.PageLink(PageNames.EventRequest, "EventRequest", new { area = WebAreas.Executive })"
+                                        class="menu-link jsCreateRequest btn btn-sm btn-primary mb-4 text-nowrap add-new-role">
+                                    Create Event Request
+                                </button>
+                                <p class="mb-0">Add Request for an event</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6">
+                <div class="card h-100">
+                    <div class="row h-100">
+                        <div class="col-3">
+                            <div class="d-flex align-items-end h-100 justify-content-center">
+                                <img src="~/img/illustrations/add-new-role-illustration.png" class="img-fluid"
+                                     alt="Image" width="68" />
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="card-body text-sm-end text-end ps-sm-0">
+                                <a href="/create-conference-request" class="btn btn-sm btn-primary mb-4 text-nowrap add-new-role">
+                                    Create Conference Request
+                                </a>
+                                <p class="mb-0">Add request for a conference in suite or conference room</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-6">
+            <div class="card-widget-separator-wrapper">
+                <div class="card-body card-widget-separator">
+                    <div class="row gy-4 gy-sm-1">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
+                                <div>
+                                    <h4 class="mb-0">@Model.TotalRequest</h4>
+                                    <p class="mb-0">Total Requests</p>
+                                </div>
+                                <div class="avatar me-sm-6">
+                                    <span class="avatar-initial rounded text-heading">
+                                        <i class="ri-radio-button-line ri-26px"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="d-none d-sm-block d-lg-none me-6" />
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-start card-widget-2 border-end pb-4 pb-sm-0">
+                                <div>
+                                    <h4 class="mb-0">@Model.ApproveRequest</h4>
+                                    <p class="mb-0">Approved</p>
+                                </div>
+                                <div class="avatar me-lg-6">
+                                    <span class="avatar-initial rounded text-heading">
+                                        <i class="ri-checkbox-circle-line ri-26px"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <hr class="d-none d-sm-block d-lg-none" />
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
+                                <div>
+                                    <h4 class="mb-0">@Model.RejectRequest</h4>
+                                    <p class="mb-0">Rejected</p>
+                                </div>
+                                <div class="avatar me-sm-6">
+                                    <span class="avatar-initial rounded text-heading">
+                                        <i class="ri-close-circle-line ri-26px"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h4 class="mb-0">@Model.PendingRequest</h4>
+                                    <p class="mb-0">Pending</p>
+                                </div>
+                                <div class="avatar">
+                                    <span class="avatar-initial rounded text-heading">
+                                        <i class="ri-checkbox-blank-circle-line ri-26px"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order List Table -->
+        <div class="card">
+            <div class="card-datatable table-responsive">
+                <table class="table" id="matchEventTable">
+                    <thead>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Event Name</th>
+                            <th class="text-center">Requested Tickets</th>
+                            <th class="text-center">Requested Parking Passes</th>
+                            <th class="text-center">SRO Tickets</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/_EventRequestPartial.cshtml", Model.RequestsModels)
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <!-- Footer -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+@section Scripts {
+    <script>
+        EventPage.init();
+    </script>
+}

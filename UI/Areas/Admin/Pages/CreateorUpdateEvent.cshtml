@@ -1,0 +1,138 @@
+﻿@page "/admin/create-event"
+@model CreateorUpdateEventModel
+@using Domain.Common.Const;
+@using Domain.Common.Enums
+@{
+    Layout = Layouts.Default;
+
+    var title = (Model.EventModels.EventId == 0) ? "Add Event" : "Edit Event";
+    ViewData["Title"] = title;
+
+    var eventImage = Model.EventModels.ImageUrl;
+    var allowedFileTypes = string.Join(',', Constants.AllowedImageFileTypes);
+
+
+}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div>
+            <div class="card mb-6 px-5">
+                <div class="card-header d-flex flex-wrap justify-content-center gap-4">
+                    <div class="text-center">
+                        <h4 class="address-title mb-2">@title</h4>
+                    </div>
+                </div>
+                <div class="card-body mt-1">
+                    <div class="row gy-6 mb-6">
+                        <form class="formclass" novalidate method="post" enctype="multipart/form-data">
+                            @Html.HiddenFor(x => x.EventModels.EventId, new { @class = "form-control jsHdnEventId" })
+                            @Html.HiddenFor(x => x.EventModels.IsActive)
+
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="EventModels.EventName" class="form-label required"></label>
+                                        <input type="text" asp-for="EventModels.EventName" class="form-control" placeholder="Enter the event name" />
+                                        <span asp-validation-for="EventModels.EventName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="EventModels.Venue" class="form-label required"></label>
+                                        <input type="text" asp-for="EventModels.Venue" class="form-control" placeholder="Enter the event venue" />
+                                        <span asp-validation-for="EventModels.Venue" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.EventType" class="form-label required"></label>
+                                        @Html.DropDownListFor(x => x.EventModels.EventType, Html.GetEnumSelectList<EventType>(), "Select", new { @class = "form-select" })
+                                        <span asp-validation-for="EventModels.EventType" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.EventTotalTickets" class="form-label required"></label>
+                                        <input type="text" asp-for="EventModels.EventTotalTickets" class="form-control number-type" placeholder="Total number of event tickets" />
+                                        <span asp-validation-for="EventModels.EventTotalTickets" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.EventTotalParking" class="form-label required"></label>
+                                        <input type="text" asp-for="EventModels.EventTotalParking" class="form-control number-type" placeholder="Total number of parking passes" />
+                                        <span asp-validation-for="EventModels.EventTotalParking" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.EventTotalSROTickets" class="form-label required"></label>
+                                        <input type="text" asp-for="EventModels.EventTotalSROTickets" class="form-control number-type" placeholder="Total number of SRO tickets" />
+                                        <span asp-validation-for="EventModels.EventTotalSROTickets" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.MatchDate" class="form-label required"></label>
+                                        <input asp-for="EventModels.MatchDate" class="form-control dob-picker" required placeholder="Enter the event date" />
+                                        <span asp-validation-for="EventModels.MatchDate" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.EventTime" class="form-label required"></label>
+                                        <input asp-for="EventModels.EventTime" class="form-control time-picker" placeholder="Enter the event time" />
+                                        <span asp-validation-for="EventModels.EventTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.File" class="form-label required"></label>
+                                        <div class="mb-3">
+                                            <div class="input-group">
+                                                <span class="input-group-text jsInputFileSpan" style="cursor:pointer;">Choose File</span>
+                                                <input type="text" asp-for="EventModels.Image" class="form-control jsInputFile" required readonly="readonly" placeholder="No file chosen" style="caret-color: transparent; cursor:pointer;" autocomplete="off">
+                                            </div>
+                                            <span asp-validation-for="EventModels.Image" class="text-danger"></span>
+                                        </div>
+                                        <input class="form-control jsChangeImage" type="file" asp-for="EventModels.File" required accept="@allowedFileTypes" style="opacity:0;height:0;margin-bottom:-10px;display:none;">
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 mb-4">
+                                        <label asp-for="EventModels.EventSROPerTicketPrice" class="form-label required"></label>
+                                        <input type="text" asp-for="EventModels.EventSROPerTicketPrice" class="form-control number-type" placeholder="Enter per ticket SRO price" />
+                                        <span asp-validation-for="EventModels.EventSROPerTicketPrice" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-4">
+                                        <br />
+                                        <div class="row">
+                                            <div class="col">
+                                                <img name="EventModels.Image" src="@eventImage" id="user_img" title="thumbnail" width="350" class="img-fluid" style="display:none; border-radius:10px;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <!-- Footer -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+    <!-- / Footer -->
+    <div class="content-backdrop fade" />
+</div>
+<!-- Content wrapper -->
+@section scripts {
+    <script>
+        EventPage.init();
+    </script>
+}

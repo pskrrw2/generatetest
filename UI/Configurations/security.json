@@ -1,0 +1,7 @@
+{
+  "SecuritySettings": {
+    "RequireConfirmedAccount": true,
+    "RequireConfirmedEmail": true,
+    "RequireUniqueEmail": true
+  }
+}

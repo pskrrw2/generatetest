@@ -1,0 +1,48 @@
+﻿@model Domain.ViewModel.MailConferenceVm
+
+@{
+    Layout = "EmailLayout.cshtml";
+}
+<span class="preheader">Conference Request filled by @Model.ExecutiveName</span>
+<table role="presentation"
+       border="0"
+       cellpadding="0"
+       cellspacing="0"
+       class="main">
+    <!-- START MAIN CONTENT AREA -->
+    <tr>
+        <td class="wrapper">
+            <p>Hi Admin,</p>
+            <p>
+                @Model.ActionName data has been submitted by <b>@Model.ExecutiveName</b> for the conference going to be scheduled on <b>@Model.ConferenceDate</b>. Please visit the portal to check the data.
+            </p>
+            <table role="presentation"
+                   border="0"
+                   cellpadding="0"
+                   cellspacing="0"
+                   class="btn btn-primary"
+                   style="margin-top: 35px">
+                <tbody>
+                    <tr>
+                        <td align="left">
+                            <table role="presentation"
+                                   border="0"
+                                   cellpadding="0"
+                                   cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="@Model.UrlPath" target="_blank">Go to Portal</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    <!-- END MAIN CONTENT AREA -->
+</table>

@@ -1,0 +1,83 @@
+﻿@using Domain.Identity
+@using Microsoft.AspNetCore.Identity
+@using UI.Areas.Shared.Components.Notification
+@inject SignInManager<ApplicationUser> SignInManager
+@inject RoleManager<ApplicationRole> RoleManager
+
+@{
+    var user = await SignInManager.UserManager.GetUserAsync(User);
+    var roleName = string.Empty;
+
+    if (user != null && SignInManager.IsSignedIn(User))
+    {
+        var roles = await SignInManager.UserManager.GetRolesAsync(user);
+        roleName = roles.FirstOrDefault();
+    }
+
+    var changePasswordPage = Url.Page(PageNames.ChangePassword, new { area = WebAreas.Identity });
+}
+
+<!-- Navbar -->
+<nav class="layout-navbar navbar-detached container-xxl navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="ri-menu-fill ri-22px"></i>
+        </a>
+    </div>
+
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @(await Component.InvokeAsync<NotificationViewComponent>())
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                        <div class="avatar avatar-online">
+                            <img src="/img/avatars/1.png" class="rounded-circle">
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-2">
+                                        <div class="avatar avatar-online">
+                                            <img src="/img/avatars/1.png" class="rounded-circle">
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <span class="fw-medium d-block small">@User.Identity?.Name</span>
+                                        <small class="text-muted">@roleName</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li><div class="dropdown-divider"></div></li>
+                        <li>
+                            <form class="d-flex mx-3" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                <button type="submit" class="btn btn-sm btn-danger" style="width:100%;">
+                                    <small class="align-middle">Logout</small>
+                                    <i class="ri-logout-box-r-line ms-2 ri-16px"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <!--/ User -->
+            }
+            else
+            {
+                <li><a class="btn-purple" id="login" href="/account/login">Login</a></li>
+            }
+        </ul>
+    </div>
+
+    <!-- Search Small Screens -->
+    <div class="navbar-search-wrapper search-input-wrapper d-none">
+        <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..." aria-label="Search...">
+        <i class="ri-close-fill search-toggler cursor-pointer"></i>
+    </div>
+</nav>
+<!-- / Navbar -->

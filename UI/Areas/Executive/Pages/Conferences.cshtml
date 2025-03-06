@@ -1,0 +1,296 @@
+﻿@page "/conference-request"
+@using System.Globalization
+@using Domain.Common.Enums
+@model UI.Areas.Executive.Pages.ConferencesModel
+@{
+    ViewData["Title"] = "Conference Requests";
+    var i = 1;
+    var ttext = string.Empty;
+    var statusName = string.Empty;
+}
+
+<div class="content-wrapper">
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        @if (!Model.IsAdmin)
+        {
+            <div class="row mb-6 g-4">
+                <div class="col-md-6 col-xl-4">
+                    <div class="card bg-dark border-0 text-white">
+                        <img class="card-img" src="~/img/showcase/your-suite.webp" alt="Card image">
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card bg-dark border-0 text-white">
+                        <img class="card-img" src="~/img/showcase/stage-suite.webp" alt="Card image">
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card bg-dark border-0 text-white">
+                        <img class="card-img" src="~/img/showcase/owners-suite.webp" alt="Card image">
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="col-xl-12 col-lg-12 col-md-6">
+                    <div class="card h-100">
+                        <div class="row h-100">
+                            <div class="col-3">
+                                <div class="d-flex align-items-end h-100 justify-content-center">
+                                    <img src="~/img/illustrations/add-new-role-illustration.png" class="img-fluid"
+                                         alt="Image" width="68" />
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <div class="card-body text-sm-end text-end ps-sm-0">
+                                    <a href="/create-conference-request" class="btn btn-sm btn-primary mb-4 text-nowrap add-new-role">
+                                        Create Conference Request
+                                    </a>
+                                    <p class="mb-0">Add request for a conference in suite or conference room</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6">
+                </div>
+            </div>
+        }
+        <div class="card mt-4">
+            <div class="card-datatable table-responsive">
+                <table class="table" id="ConfernceTable">
+                    <thead>
+                        <tr>
+                            <th>S. No.</th>
+                            @if (Model.IsAdmin)
+                            {
+                                <th>Executive Name</th>
+                            }
+                            <th>Suite</th>
+                            <th>Conference Date</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var items in Model.Conferences)
+                        {
+                            var isUpcomingEvent = DateTimeOffset.UtcNow < items.ConferenceDate;
+                            var successFoodPRequest = "bg-error";
+                            var successAddOnRequest = "bg-error";
+                            var successAttendeeRequest = "bg-error";
+                            ttext = items.Status switch
+                            {
+                                nameof(StatusType.Pending) => "text-warning",
+                                nameof(StatusType.Rejected) => "text-danger",
+                                nameof(StatusType.Approved) => "text-success",
+                                _ => ""
+                            };
+
+                            statusName = items.Status switch
+                            {
+                                nameof(StatusType.Pending) => nameof(StatusType.Pending),
+                                nameof(StatusType.Rejected) => nameof(StatusType.Rejected),
+                                nameof(StatusType.Approved) => nameof(StatusType.Approved),
+                                _ => ""
+                            };
+
+                            var editEventPage = Url.Page(PageNames.CreateConferenceRequest, new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId
+                            });
+
+                            var getViewHandler = Url.PageLink(PageNames.CreateConferenceRequest, "EditConferenceByIdPartial", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                action = "View",
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var getApprovedHandler = Url.PageLink(PageNames.Conferences, "AdminConferenceApproveReject", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                action = "Approved",
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var getRejectHandler = Url.PageLink(PageNames.Conferences, "AdminConferenceApproveReject", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                action = "Reject",
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var fillEventHandler = Url.PageLink(PageNames.CreateConferenceRequest, "EditConferenceByIdPartial", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                action = "Fill",
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var fillCateringEventHandler = Url.PageLink(PageNames.CreateConferenceRequest, "EditConferenceByIdPartial", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                action = "Catering",
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var fillGuestEventHandler = Url.PageLink(PageNames.CreateConferenceRequest, "EditConferenceByIdPartial", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                action = "Guest",
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var MailAttendeeRequestHandler = Url.PageLink(PageNames.AttendeeDetails, "MailAttendeePartial", new
+                            {
+                                area = WebAreas.Executive,
+                                Id = items.ConferenceId,
+                                IsConference = true
+                            });
+
+
+                            var ExportRequestHandler = Url.PageLink(PageNames.CreateConferenceRequest, "ExportPartial", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                executiveName = items.ExecutiveName
+                            });
+
+                            var ExportExcekRequestHandler = Url.PageLink(PageNames.CreateConferenceRequest, "ExportConferenceToExcel", new
+                            {
+                                area = WebAreas.Executive,
+                                conferenceId = items.ConferenceId,
+                                executiveName = items.ExecutiveName
+                            });
+
+                            <tr>
+                                <td>@(i++)</td>
+                                @if (Model.IsAdmin)
+                                {
+                                    <td>@items.ExecutiveName</td>
+                                }
+                                <td>@items.SuiteType</td>
+                                <td>@items.ConferenceDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture)</td>
+                                <td class="text-center">
+                                    <div class="d-flex" style="justify-content: center;">
+                                        <h6 class="mb-0 d-flex align-items-center @ttext">
+                                            <i class="ri-circle-fill ri-10px me-1"></i>@statusName
+                                        </h6>
+                                        @if (items.Status == nameof(StatusType.Approved))
+                                        {
+                                            <div class="d-flex align-items-center mx-4">
+                                                @if (items.PackageSelected != null)
+                                                    successFoodPRequest = "bg-success";
+
+                                                <div class="avatar avatar-sm me-2" style="cursor: default;">
+                                                    <span class="avatar-initial rounded-circle @successFoodPRequest" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Food Package"> <i class="ri-restaurant-2-fill"></i></span>
+                                                </div>
+
+                                                @if (items.SelectedAddOnIds != null)
+                                                    successAddOnRequest = "bg-success";
+
+                                                <div class="avatar avatar-sm me-2" style="cursor: default;">
+                                                    <span class="avatar-initial rounded-circle @successAddOnRequest" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Add-Ons Selection"><i class="ri-apps-2-add-fill"></i></span>
+                                                </div>
+
+                                                @if (items.Attendees?.Count() > 0)
+                                                    successAttendeeRequest = "bg-success";
+
+                                                <div class="avatar avatar-sm me-2" style="cursor: default;">
+                                                    <span class="avatar-initial rounded-circle @successAttendeeRequest" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Attendee Details"><i class="ri-user-add-fill"></i></span>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div>
+                                        <button class="btn btn-sm btn-icon btn-text-secondary waves-effect waves-light rounded-pill dropdown-toggle hide-arrow show"
+                                                data-bs-toggle="dropdown" aria-expanded="true">
+                                            <i class="ri-more-2-line ri-20px"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end m-0"
+                                             style="position: absolute; inset: auto 0px 0px auto; margin: 0px; transform: translate3d(-69.6px, -227.2px, 0px);"
+                                             data-popper-placement="top-end">
+
+                                            @*   @if (items.Attendees?.Count() > 0 || items.PackageSelected != null || items.SelectedAddOnIds?.Count() > 0)
+                                            {
+                                                <a href="javascript:void(0);" title="View Conference Request" data-bs-dismiss="modal" data-action="@fillEventHandler" class="dropdown-item jsViewEventRequest btn-card-block-spinner">View</a>
+                                            }
+                                            else
+                                            { *@
+                                            <a href="javascript:void(0);" title="View Conference Request" data-bs-dismiss="modal" data-action="@getViewHandler" class="dropdown-item jsViewEventRequest btn-card-block-spinner">View</a>
+                                            @* } *@
+                                            @if (isUpcomingEvent)
+                                            {
+                                                if (items.Status == nameof(StatusType.Pending) && !Model.IsAdmin)
+                                                {
+                                                    <a href="@editEventPage" title="Edit" class="dropdown-item btn-card-block-spinner">
+                                                        Edit
+                                                    </a>
+                                                }
+
+                                                if (Model.IsAdmin && @items.Status == nameof(StatusType.Pending))
+                                                {
+
+                                                    <a href="javascript:void(0);" title="Approve Conference Request" data-bs-dismiss="modal" data-action="@getApprovedHandler" class="dropdown-item jsApproveRequest btn-card-block-spinner">Approve</a>
+                                                    <a href="javascript:void(0);" title="Reject Conference Request" data-bs-dismiss="modal" data-action="@getRejectHandler" class="dropdown-item jsRejectRequest btn-card-block-spinner">Reject</a>
+                                                }
+
+                                                if (items.Status == nameof(StatusType.Approved))
+                                                {
+                                                    @if (items.Attendees.Any() && Model.IsAdmin)
+                                                    {
+                                                        <a href="javascript:void(0);" title="Send Notification" data-action="@MailAttendeeRequestHandler" data-bs-dismiss="modal" class="dropdown-item jsMailEventRequest btn-card-block-spinner">Send Notification</a>
+                                                    }
+
+                                                    var editCateringName = string.Empty;
+                                                    var editGuestName = string.Empty;
+                                                    editCateringName = (Model.IsAdmin) ? "Edit Catering Data" : "Fill Catering Data";
+                                                    editGuestName = (Model.IsAdmin) ? "Edit Guest List" : "Fill Guest List";
+                                                    if (!Model.IsAdmin)
+                                                    {
+                                                        <button title="Catering Conference Data" data-action="@fillCateringEventHandler" data-bs-dismiss="modal" class="dropdown-item jsFillCateringEventRequest btn-card-block-spinner">@editCateringName</button>
+                                                    }
+                                                    <button title="Guest Conference Data" data-action="@fillGuestEventHandler" data-bs-dismiss="modal" class="dropdown-item jsFillGuestEventRequest btn-card-block-spinner">@editGuestName</button>
+                                                }
+                                            }
+
+                                            @if (items.Attendees?.Count() > 0 || items.PackageSelected != null || items.SelectedAddOnIds?.Count() > 0)
+                                            {
+                                                if (Model.IsAdmin)
+                                                {
+                                                    <a href="javascript:void(0);" title="Print/Download PDF" data-action="@ExportRequestHandler" data-bs-dismiss="modal" class="dropdown-item jsExportEventRequest btn-card-block-spinner">Print/Download</a>
+                                                    <a href="javascript:void(0);" data-action="@ExportExcekRequestHandler" data-bs-dismiss="modal" class="dropdown-item jsExportExcel btn-card-block-spinner">Download Excel</a>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+
+    <div class="content-backdrop fade"></div>
+</div>
+
+@section Scripts {
+    <script>
+        ConferencePage.init();
+    </script>
+}

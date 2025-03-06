@@ -1,0 +1,350 @@
+﻿@page "/faq"
+@model UI.Areas.Executive.Pages.FAQModel
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "FAQs";
+}
+
+<section id="landingFAQ" class="section-py bg-body landing-faq mb-6">
+    <div class="container bg-icon-right">
+        <h5 class="text-center mb-2 display-5 fs-4 fw-bold">Frequently Asked Questions</h5>
+        <p class="text-center fw-medium mb-4 mb-md-12 pb-4">
+            Browse through these FAQs to find answers to commonly asked questions.
+        </p>
+        <div class="row gy-5">
+            <div class="col-lg-12">
+                <div class="accordion" id="accordionFront">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-One">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
+                                Can I bring outside food and beverages into the suite?
+                            </button>
+                        </h2>
+
+                        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFront" aria-labelledby="accordionOne">
+                            <div class="accordion-body">
+                                Due to liability and legal restrictions, no outside food and beverage of any kind may be
+                                brought into the stadium by the customer, guests, or exhibitors.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Two">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
+                                Is WiFi available in the stadium?
+                            </button>
+                        </h2>
+                        <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="accordionTwo" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                Complimentary Wi-Fi is available throughout SoFi Stadium. To join, select #sofistadium
+                                from a Wi-Fi-enabled device. Please note that at this time, cellular customers of certain
+                                carriers may encounter coverage gaps, so we suggest logging on to Wi-Fi.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Three">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">
+                                How will I and my guests receive the tickets?
+                            </button>
+                        </h2>
+                        <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="accordionThree" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                <ol>
+                                    <li>
+                                        Once your ticket request is approved, you will need to fill the request and provide your
+                                        guest contact information. You have the option of having all tickets transferred to you for
+                                        distribution (see FAQ for “access the tickets”).
+                                    </li>
+                                    <li>
+                                        As you complete the guest list for the event, you will have an option to assign seats to each
+                                        guest (using a dropdown menu). If assigned seating isn’t needed, please identify if you
+                                        want the guest to have a stadium seat or high bar seat (using the dropdown menu).
+                                    </li>
+                                    <li>
+                                        Once the ticket is transferred and accepted by your guest, we will no longer be able to
+                                        access it. It is imperative that your list include confirmed guests. Any guest unable to attend
+                                        will need to transfer their ticket back to sofi@thewoundpros.com immediately for
+                                        reallocation.
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Four">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">
+                                How do I access the tickets for the game and events?
+                            </button>
+                        </h2>
+                        <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="accordionFour" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>
+                                        <p><strong>Chargers Mobile Tickets</strong></p>
+                                        <p>
+                                            You can view your mobile ticket(s) by using the web browser on your phone to log
+                                            into <a href="https://am.ticketmaster.com/chargers/">Chargers Account Manager</a> on Chargers.com. You can also use the Chargers app
+                                            under the Tickets tab to log into Account Manager. Please make sure to use same email
+                                            address that is on your season ticket member account, or the email address that was used
+                                            to obtain your tickets. <br />
+                                            You can download the Chargers app on your iPhone <a href="https://apps.apple.com/us/app/los-angeles-chargers/id390846039"> here</a> or on your Android <a href="https://play.google.com/store/apps/details?id=com.mobile.android.chargers"> here</a>. Once
+                                            logged into your account, select the event you would like to manage, and then click &quot;View
+                                            Barcode&quot; to display your mobile ticket which will be scanned in for entry. We highly
+                                            encourage fans to save your mobile tickets to your wallet before arriving.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Rams Mobile Tickets</strong></p>
+                                        <p>
+                                            All ticketing at SoFi Stadium is mobile-only and can be managed through the <a href="https://am.ticketmaster.com/rams/">Rams Account Manager</a> on mobile web or on the Los Angeles Rams app. The mobile suite tickets
+                                            will be used for entry into the stadium as well as access into the suite. Please note that
+                                            screenshots of barcodes will not be valid for entry. We recommend you add your ticket to
+                                            your phone’s wallet.<br />
+                                            Below are links to the Rams online mobile ticketing guides with instructions on how to
+                                            Transfer, Claim, and Download tickets.
+                                            <ul>
+                                                <li><a href="https://static.clubs.nfl.com/image/upload/v1628900962/rams/y8poobineg1l0ne984h2.pdf">Transfer Tickets</a></li>
+                                                <li><a href="https://static.clubs.nfl.com/image/upload/v1654205810/rams/r5sggl8wewde1s1wh26w.pdf">Claim Tickets</a></li>
+                                                <li><a href="https://static.clubs.nfl.com/image/upload/v1628900838/rams/tvpfgq6ru6urffeyadgy.pdf">View/Download Tickets</a></li>
+                                            </ul>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Sofi Events Mobile Tickets</strong></p>
+                                        <p>
+                                            Mobile tickets are required for entry. No screenshots and no PDFs are acceptable. Tickets
+                                            can be accessed via the SoFi Stadium app. Download the SoFi Stadium app on the <a href="https://apps.apple.com/us/app/sofi-stadium/id1517896435">
+                                                Apple App Store
+                                            </a> or <a href="https://play.google.com/store/apps/details?id=com.hollywoodparkca.sofi"> Google Play Store</a>. To check-in quickly, access digital tickets and add to
+                                            mobile wallet before arriving at the gate. Attendees can connect to our WiFi network
+                                            #SoFiStadium to access and present tickets on their mobile device.
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Five">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFive" aria-expanded="false" aria-controls="accordionFive">
+                                Does my child need a ticket?
+                            </button>
+                        </h2>
+                        <div id="accordionFive" class="accordion-collapse collapse" aria-labelledby="accordionFive" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                All guests two (2) years of age or older must have a ticket in order to attend.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Six">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionSix" aria-expanded="false" aria-controls="accordionSix">
+                                What type of phone or mobile device do I need to use mobile tickets?
+                            </button>
+                        </h2>
+                        <div id="accordionSix" class="accordion-collapse collapse" aria-labelledby="accordionSix" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                Any smartphone or mobile device that has internet capabilities and can access the Account Manager can be used to access mobile tickets.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Seven">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionSeven" aria-expanded="false" aria-controls="accordionSeven">
+                                Can I print my tickets or take a screenshot of the ticket?
+                            </button>
+                        </h2>
+                        <div id="accordionSeven" class="accordion-collapse collapse" aria-labelledby="accordionSeven" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                As part of our ticket policy, screenshots will not be permitted for entry. Additionally, mobile tickets may only be transferred or forwarded electronically through the Chargers Account Manager. Mobile tickets cannot be transferred as a PDF using any other form of delivery and neither PDF printouts nor on-screen PDF tickets will be allowed for entrance into the game.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Eight">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionEight" aria-expanded="false" aria-controls="accordionEight">
+                                What if I don't have a smartphone? How do I access my tickets?
+                            </button>
+                        </h2>
+                        <div id="accordionEight" class="accordion-collapse collapse" aria-labelledby="accordionEight" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                All tickets are mobile only. Don't have a smartphone? You can utilize another member of your party's smart phone to present your ticket or pass.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Nine">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionNine" aria-expanded="false" aria-controls="accordionNine">
+                                Having trouble accessing my mobile tickets. What do I do?
+                            </button>
+                        </h2>
+                        <div id="accordionNine" class="accordion-collapse collapse" aria-labelledby="accordionNine" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>
+                                        <p><strong>Chargers Support</strong></p>
+                                        <p>
+                                            If you have any trouble with your tickets please dial 1 877-CHARGERS opt. 2 to speak with a Chargers representative or email <a href="mailto:guest.services@chargers.nfl.com">guest.services@chargers.nfl.com</a>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>All Other Events Support</strong></p>
+                                        <p>
+                                            If you have any trouble with your tickets please dial (424)-396-6800 or email <a href="mailto:guestservices@hollywoodparkca.com">guestservices@hollywoodparkca.com</a>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Rams Support</strong></p>
+                                        <p>
+                                            If you have any trouble with your tickets please dial (818) 338-0011 or email <a href="mailto:info@rams.nfl.com">info@rams.nfl.com</a>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Ten">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTen" aria-expanded="false" aria-controls="accordionTen">
+                                What are the options for Ride Share?
+                            </button>
+                        </h2>
+                        <div id="accordionTen" class="accordion-collapse collapse" aria-labelledby="accordionTen" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>
+                                        <p><strong>Dedicated Ride</strong></p>
+                                        <p>
+                                            Dedicated rideshare locations will be available north of SoFi Stadium on Kareem Court. Guests are encouraged to utilize 3178 Pincay Dr, Inglewood, CA 90305 as their drop off and pickup location when requesting rideshare services.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Pickup</strong></p>
+                                        <p>
+                                            The designated pickup will be located on Kareem Court and Manchester Boulevard.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Drop Off</strong></p>
+                                        <p>
+                                            Guests using rideshare services, taxi's, limos, buses, and shuttles can be dropped off on the Northbound curb lane on Kareem Court. Drivers must arrive from Crenshaw Blvd., turning onto Westbound Pincay Dr. to reach the drop off zone on Kareem Ct.
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Eleven">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionEleven" aria-expanded="false" aria-controls="accordionEleven">
+                                What is Clear Bag Policy?
+                            </button>
+                        </h2>
+                        <div id="accordionEleven" class="accordion-collapse collapse" aria-labelledby="accordionEleven" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                For all events at SoFi Stadium, permitted bags should be clear plastic, vinyl or PVC and not exceed 12” x 6” x 12”. Further details can be found <a href="https://www.nfl.com/legal/clear-bag-policy">here</a>.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Twelve">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwelve" aria-expanded="false" aria-controls="accordionTwelve">
+                                How do I enter the suite?
+                            </button>
+                        </h2>
+                        <div id="accordionTwelve" class="accordion-collapse collapse" aria-labelledby="accordionTwelve" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                For the best access to the suite, please enter the stadium at VIP Entry 7 -American Airlines VIP Entrance. Suite access begins 2 hours prior to kickoff. <strong>The left lane of this VIP entry is dedicated to guests with a suite ticket</strong>.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Thirteen">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThirteen" aria-expanded="false" aria-controls="accordionThirteen">
+                                What are the options for Ride Share?
+                            </button>
+                        </h2>
+                        <div id="accordionThirteen" class="accordion-collapse collapse" aria-labelledby="accordionThirteen" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>
+                                        <p><strong>Advanced Catering Order Deadlines & Procedures</strong></p>
+                                        <p>
+                                            Due to liability and legal restrictions, no outside food and beverage of any kind may be brought into the stadium by the customer, guests, or exhibitors.<br />
+                                            Advanced orders must be placed by 12:00pm, (5) business days prior to event day. Orders placed after the deadline are subject to availability and additional labor fees.<br />
+                                            If ordering from the general catering menu, a 30% surcharge will apply for groups less than 25 guests.<br />
+                                            All suites are required to have (1) private suite attendant for every suite package ordered at $250 per attendant. I.E. (2) orders of Suite Package one are required to have (2) attendants. If no packages are ordered, (1) attendant is required for every (12) guests.<br />
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Cancellation Policy</strong></p>
+                                        <p>
+                                            All food and beverage orders are subject to a cancellation fee if not cancelled more than 7 days in advance. You will be charged 50% of your order total if you cancel after the 7-day deadline. You will be charged 100% of your order total if you cancel within 72 hours of your event.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Credit Card (Payment Information)</strong></p>
+                                        <p>
+                                            All payments are taken via credit card through the Square online portal. A secure payment link will be sent by your catering representative.<br />
+                                            A 90% deposit is due (3) business days prior to event day with any remaining balance due post event.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Food and Beverage Delivery</strong></p>
+                                        <p>
+                                            All food and beverage ordered in advance will be delivered at the time listed on the event order and will be held out for 3 hours, unless a specific time is requested. Additional charges may incur for extending service times.<br />
+                                            Food will not be allowed to be removed or prepared to-go from an event. Legends Hospitality is the only licensed authority to sell and serve liquor for consumption on the premises.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Tax and Administrative Fees</strong></p>
+                                        <p>
+                                            A 10% Sales Tax and a 24% Administrative Fee will be added onto your final food and beverage bill. The Administrative Fee is for administration of the Event, is not purported to be a gratuity, and will   not be distributed as gratuities to the employees who provide services to the guests, but rather will be retained by management to help defray administrative costs related to the event. It is at your sole discretion to leave a gratuity for the service staff. Prices DO NOT include California Sales Tax on food, beverage, or administrative fees.
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Fourteen">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFourteen" aria-expanded="false" aria-controls="accordionFourteen">
+                                What should I do if a guest can no longer attend and cancels?
+                            </button>
+                        </h2>
+                        <div id="accordionFourteen" class="accordion-collapse collapse" aria-labelledby="accordionFourteen" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                Once the ticket is transferred and accepted by your guest, we will no longer be able to access it. It is imperative that your list include confirmed guests. Any guest unable to attend will need to transfer their ticket back to <a href:mailto:sofi@thewoundpros.com>sofi@thewoundpros.com</a> immediately for reallocation.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="head-Fifteen">
+                            <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFifteen" aria-expanded="false" aria-controls="accordionFifteen">
+                                Will the suite have food? How do I order catering for the suite?
+                            </button>
+                        </h2>
+                        <div id="accordionFifteen" class="accordion-collapse collapse" aria-labelledby="accordionFifteen" data-bs-parent="#accordionFront">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li>
+                                        <p>
+                                            Upon approval of your ticket request, you will be able to select from the catering packages of food and beverages or custom select items.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            Your catering order must be completed the Monday before the date of your game/event. If you do not select before the deadline, Package One will be chosen for you and your guests to enjoy in the suite during the game/event.
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

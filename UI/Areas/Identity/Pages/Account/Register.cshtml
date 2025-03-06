@@ -1,0 +1,52 @@
+﻿@page "/account/invite"
+@model RegisterModel
+@using Domain.Common.Const
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Invite Executive";
+}
+<div class="card border rounded mb-6 text-center mx-5 my-6">
+    <form id="formAuthentication" class="mb-3" method="post">
+        <div class="card-header" style="padding-bottom: 0px; box-shadow: 0 0.25rem 0.875rem 0 rgba(38, 43, 67, 0.16); border-bottom: 1px solid var(--bs-border-color);">
+            <div class="card-title header-elements">
+                <h5 class="m-0 me-2">Invite Executive</h5>
+                <div class="card-title-elements ms-auto">
+                    <label class="switch">
+                        <input type="checkbox" asp-for="Input.IsAdmin" class="switch-input">
+                        <span class="switch-label">Executive</span>
+                        <span class="switch-toggle-slider">
+                            <span class="switch-on"></span>
+                            <span class="switch-off"></span>
+                        </span>
+                        <span class="switch-label">Admin</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="card-body pt-8 px-8">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12 form-floating form-floating-outline mb-5">
+                    <input asp-for="Input.FirstName" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter executive first name" autofocus />
+                    <label asp-for="Input.FirstName"></label>
+                    <small><span asp-validation-for="Input.FirstName" class="text-danger"></span></small>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-12 form-floating form-floating-outline mb-5">
+                    <input asp-for="Input.LastName" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter executive last name" autofocus />
+                    <label asp-for="Input.LastName"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 form-floating form-floating-outline mb-5">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Enter email of executive to invite" autofocus />
+                    <label asp-for="Input.Email"></label>
+                    <small><span asp-validation-for="Input.Email" class="text-danger"></span></small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary me-3">Invite</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

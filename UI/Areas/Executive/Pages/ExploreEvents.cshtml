@@ -1,0 +1,87 @@
+﻿@page "/explore-events"
+@model ExploreEventsModel
+@using Domain.Common.Const;
+@using System.Globalization
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Explore Events";
+}
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="mb-4">
+            <div class="row">
+                @foreach (var events in Model.MatchEvent)
+                {
+                    var isUpcomingEvent = DateTimeOffset.UtcNow < events.EventDate;
+                    <div class="col-12 col-xxl-4 col-lg-4 mb-4">
+                        <div class="card">
+                            <img class="card-img-top" src="@events.EventThumbnail" style="height: 200px; object-fit: cover;" alt="Event Thumbnail">
+                            <div class="card-body">
+                                <div class="d-flex align-items-start justify-content-between mb-2">
+                                    <div>
+                                        <h5 class="mb-1">@events.EventName</h5>
+                                        <p class="fw-medium small">@events.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @events.EventTime</p>
+                                    </div>
+                                    <div>
+                                        @if (isUpcomingEvent)
+                                        {
+                                            <div class="badge bg-label-success rounded-pill me-4 mt-2">Upcoming</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="badge bg-label-danger rounded-pill mt-2">
+                                                Expired
+                                                <span class="d-inline-block ms-1" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Requests cannot be made for past events.">
+                                                    <i class="tf-icons ri-information-line"></i>
+                                                </span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <ul class="p-0 m-0 mb-6" style="border: 1px solid var(--bs-border-color); padding: 10px !important; border-radius: var(--bs-border-radius-lg);">
+                                    <li class="d-flex">
+                                        <div class="avatar flex-shrink-0 me-3">
+                                            <span class="avatar-initial rounded-3 bg-label-primary"><i class="ri-coupon-2-line ri-24px"></i></span>
+                                        </div>
+                                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                            <div class="me-2">
+                                                <h6 class="mb-0 fw-normal">Available Tickets</h6>
+                                            </div>
+                                            <div class="user-progress">
+                                                <h6 class="mb-0">@events.EventTotalTickets</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="mb-4">
+                                    @{
+                                        var getEventHandler = Url.PageLink(PageNames.EventRequest, "DashboardPartial", new
+                                        {
+                                            area = WebAreas.Executive,
+                                            eventId = events.EventId
+                                        });
+                                    }
+                                    <button type="button" title="Create Request" data-action="@getEventHandler" class="btn btn-primary btn-card-block-spinner w-100 jsCreateRequest @(isUpcomingEvent ? "" : "disabled")">
+                                        <span class="me-2">Create Request</span><i class="ri-arrow-right-line ri-16px lh-1 scaleX-n1-rtl"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <!-- Footer -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->

@@ -1,0 +1,42 @@
+﻿@model AttendeeModels
+@using static UI.Areas.Executive.Pages.CreateOrUpdateAttendeeModel;
+
+<form class="needs-validation formclass jsMailAttendeeForm" novalidate method="post" enctype="multipart/form-data" asp-area="Executive" asp-page="/CreateOrUpdateAttendee" asp-page-handler="SubmitMailForm">
+    <input type="hidden" asp-for="ConferenceId" value="@Model.ConferenceId" />
+    <input type="hidden" asp-for="RequestId" value="@Model.RequestId" />
+
+    <div class="col-12 mb-6">
+        <div class="row">
+            <div class="col-md-12">
+            <label asp-for="Subject" class="form-label"></label>
+            <input type="text" asp-for="Subject" class="form-control" placeholder="Enter the event subject" />
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mb-6">
+        <div class="row">
+             <div class="col-md-12">
+            <label asp-for="File" class="form-label">PDF file upload</label>
+            <input class="form-control" type="file" asp-for="File" id="fileInput" multiple accept=".pdf">
+             <span id="fileError" class="text-danger" style="display:none;">Please select a valid PDF file.</span>
+            </div>
+        </div>
+    </div>
+    <!-- Full Editor -->
+    <div class="col-12 mb-6">
+        <div class="card" style="box-shadow: none;">
+            <label class="form-label" style="padding: 5px 0;">Message to Send in Mail</label>
+            <div class="card-body" style="padding: 5px 0;">
+                <div id="full-editor"></div>
+                <!-- Hidden input bound to AttendeeNotes -->
+                <input type="hidden" asp-for="AttendeeNotes" id="AttendeeNotes">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12" style="text-align: right;">
+        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+    </div>
+</form>
+<script src="~/js/site.js" asp-append-version="true"></script>

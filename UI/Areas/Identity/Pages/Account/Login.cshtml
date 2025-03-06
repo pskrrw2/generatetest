@@ -1,0 +1,78 @@
+﻿@page "/account/login"
+@model LoginModel
+@using Domain.Common.Const
+@{
+    Layout = Layouts.NoHeaderFooter;
+    ViewData["Title"] = "Log in";
+    var showSendForm = Model?.Input?.Email != null ? "block" : "none";
+    var loginFormHandler = Url.Page(PageNames.Login, "OtpSend", new
+    {
+        area = WebAreas.Identity,
+    });
+
+    var verifyFormHandler = Url.Page(PageNames.Login, "VerifyOtp", new
+    {
+        area = WebAreas.Identity,
+    });
+}
+
+<style>
+    .spinner-container {
+        position: relative !important;
+    }
+</style>
+
+<!-- Login -->
+<div class="d-flex col-12 bg-card col-lg-5 col-xl-4 align-items-center authentication-bg position-relative py-sm-12 px-5 py-6" id="card-block">
+    <div class="w-px-450 mx-auto pt-5 pt-lg-0">
+
+        <div class="card p-md-7 px-5 py-6">
+            <h4 class="mb-5">Welcome Executive 👋</h4>
+            @* <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div> *@
+            <input type="hidden" asp-for="Input.Email" />
+            <div id="formAuthentication" class="mb-5" method="post">
+                <p class="mb-5">
+                    Please sign in to your executive account.
+                </p>
+
+                <form id="loginForm" method="post" data-action="@loginFormHandler">
+                    @Html.AntiForgeryToken()
+                    <div class="input-group mb-5">
+                        <input asp-for="Input.Email" class="form-control jsEmailTxtbox" required autocomplete="off" aria-required="true" placeholder="Enter your registered email" autofocus />
+                        <button class="btn btn-primary waves-effect btn-card-block-spinner jsBtnSendOtpMail" type="submit">Send OTP</button>
+                    </div>
+                    <div class="input-group">
+                        <small><span class="text-danger" asp-validation-for="Input.Email" id="errorMessage"></span></small>
+                    </div>
+                </form>
+
+                <form id="OtpAuthentication" class="mb-5" method="post" data-action="@verifyFormHandler">
+
+                    <div class="input-group mb-5">
+                        <input asp-for="Input.OtpNumber" class="form-control jsFillOtpTxt number-type" autocomplete="off" disabled aria-required="true" maxlength="6" placeholder="Please enter OTP" autofocus />
+                        <span class="input-group-text jsTimeCountDown text-danger" style="display:none; justify-content:center; width: 15%; padding: 0px;"></span>
+                    </div>
+                    <div class="mb-5">
+                        <button class="btn btn-primary d-grid w-100 jsVerifyButton" disabled type="submit" style="padding: 12px 0px;">
+                            Verify OTP
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center hideShowResend" style="display:none;">
+                    Didn't get the code?
+                    <a href="#" id="jsResendOtp" data-action="@loginFormHandler">Resend</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Login -->
+@section scripts {
+    <partial name="_ValidationScriptsPartial.cshtml" />
+    <script>
+        $(function () {
+            UserPage.init();
+        });
+    </script>
+}
+

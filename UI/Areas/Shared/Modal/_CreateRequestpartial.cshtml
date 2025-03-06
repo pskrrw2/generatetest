@@ -1,0 +1,127 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using System.Globalization
+@using static UI.Areas.Executive.Pages.CreateRequestModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model RequestModel
+@{
+    var avialableReserveSeat = "";
+    var avialableReserveColor = "available-seat";
+
+    if (Model.EventId != 0 && Model.RequestId != 0)
+    {
+        bool areSeatsUnavailable = Model.AvailableSeat > Model.AppliedTickets;
+        bool isParkingUnavailable = Model.AvailableParking > Model.AppliedParkingPasses;
+        bool isSROSeatUnavailable = Model.AvailableSROSeat > Model.AppliedSROTicket;
+
+        if (areSeatsUnavailable || isParkingUnavailable || isSROSeatUnavailable)
+        {
+            avialableReserveSeat = "disabled-input";
+            avialableReserveColor = "not-available";
+        }
+    }
+
+    var action = Model.RequestId is 0 ? "add" : "edit";
+}
+
+
+<form class="needs-validation formclass jsEventRequestForm" novalidate method="post" asp-area="Executive" asp-page="/CreateRequest">
+    <input type="hidden" asp-for="@Model.RequestId" class="jsHdnRequestId" />
+    <input type="hidden" asp-for="@Model.EventId" class="jsHdnEventId" />
+    <input type="hidden" asp-for="@Model.EventDate" />
+    <input type="hidden" asp-for="action" value="@action">
+    @if (Model.EventId != 0)
+    {
+
+        <div class="form-floating form-floating-outline mb-6">
+            <select id="bs-validation-event" class="form-select jsEventName" required asp-for="@Model.EventId" disabled>
+                <option value="">Select Match/Event</option>
+                <option data-divider="true">divider</option>
+                @foreach (var matchEvent in Model.EventMatchModels!)
+                {
+                    var eventDate = $"{@matchEvent.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture)}";
+                    <option value="@matchEvent.EventId" data-tokens="match preseason" data-subtext="@eventDate" data-avialableSeat="@matchEvent.AvailableSeat" data-availableParking="@matchEvent.AvailableParking" data-availbleSROSeat="@matchEvent.AvailableSROSeat" data-SROperTicketPrice="@matchEvent.SROperTicketPrice">
+                        @matchEvent.EventName
+                    </option>
+                }
+            </select>
+            <label class="form-label" for="bs-validation-even">Match/Event</label>
+        </div>
+    }
+    else
+    {
+        <div class="mb-4">
+            <label class="form-label required">Match/Event</label>
+            <select id="selectpickerLiveSearch" class="selectpicker form-select w-100 jsEventName" required data-live-search="true" data-style="btn-default">
+                <option value="">Select Match/Event</option>
+                <option data-divider="true">divider</option>
+                @foreach (var matchEvent in Model.EventMatchModels!)
+                {
+                    var eventDate = $"{@matchEvent.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture)}";
+                    <option value="@matchEvent.EventId" data-tokens="match preseason" data-subtext="@eventDate" data-avialableSeat="@matchEvent.AvailableSeat" data-availableParking="@matchEvent.AvailableParking" data-availbleSROSeat="@matchEvent.AvailableSROSeat" data-SROperTicketPrice="@matchEvent.SROperTicketPrice">
+                        @matchEvent.EventName
+                    </option>
+                }
+            </select>
+            <small><span asp-validation-for="@Model.EventId" class="text-danger"></span></small>
+        </div>
+    }
+    <div class="col-12">
+        <div class="mb-4">
+            <label class="form-label required" asp-for="@Model.AppliedTickets"></label>
+            <div class="input-group input-group-merge">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" asp-for="@Model.AppliedTickets" class="form-control jsRemoveAttribute @avialableReserveSeat jsTxtRequestTicket number-only" required placeholder="Enter number of ticket" aria-label="number of passes" />
+                </div>
+                <span class="input-group-text @avialableReserveColor" id="available-seat-info"><small class="jsHdnAvailableSeat" value="@Model.AvailableSeat">(@Model.AvailableSeat Available)</small></span>
+            </div>
+            <small><span style="display:none" class="text-danger jsSpanDisplaySeat"></span></small>
+            <small><span asp-validation-for="@Model.AppliedTickets" class="text-danger"></span></small>
+        </div>
+        <div class="mb-4">
+            <label class="form-label" asp-for="@Model.SROTickets"></label>
+            @Html.DropDownListFor(x => x.SROTickets, Html.GetEnumSelectList<SROType>(), new { @class = "form-select jsSROType" })
+            <small><span asp-validation-for="@Model.SROTickets" class="text-danger"></span></small>
+        </div>
+        <div class="mb-4 jsHideShowSRO" style="display:none">
+            <label class="form-label required" asp-for="@Model.AppliedSROTicket"> Number of SRO Ticket <small style="color:red;" class="jsSROPerTicket">(SRO Per Ticket Price: @Model.SROperTicketPrice $)</small></label>
+            <div class="input-group input-group-merge">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" asp-for="@Model.AppliedSROTicket" class="form-control jsRemoveAttribute @avialableReserveSeat jsTxtRequestSROTicket number-only" required placeholder="Enter number of SRO ticket" aria-label="number of passes" />
+                </div>
+                <span class="input-group-text @avialableReserveColor" id="available-seat-sro-info"><small class="jsHdnAvailableSROSeat" value="@Model.AvailableSROSeat">(@Model.AvailableSROSeat Available)</small></span>
+            </div>
+            <small><span style="display:none" class="text-danger jsSpanDisplaySROSeat"></span></small>
+            <small><span asp-validation-for="@Model.AppliedSROTicket" class="text-danger"></span></small>
+        </div>
+        <div class="mb-4">
+            <label class="form-label required" asp-for="@Model.AppliedParkingPasses"></label>
+            <div class="input-group input-group-merge">
+                <div class="form-floating form-floating-outline">
+                    <input type="text" asp-for="@Model.AppliedParkingPasses" class="form-control jsRemoveAttribute @avialableReserveSeat jsTxtRequestParking number-only" required placeholder="Enter number of parking" aria-label="number of parking" />
+                </div>
+                <span class="input-group-text @avialableReserveColor" id="available-parking-info"><small class="jsHdnAvailableParking" value="@Model.AvailableSeat">(@Model.AvailableSeat Available)</small></span>
+            </div>
+            <small><span style="display:none" class="text-danger jsSpanDisplayParking"></span></small>
+            <small><span asp-validation-for="@Model.AppliedParkingPasses" class="text-danger"></span></small>
+        </div>
+        <div class="mb-6">
+            <label for="bs-validation-bio" class="form-label">Notes</label>
+            <textarea class="form-control h-px-75" asp-for="@Model.ExecutiveNotes" rows="3" placeholder="Write your optional notes here"></textarea>
+
+        </div>
+    </div>
+    <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+        <button type="submit" class="btn btn-primary btnSubmitCreateRequest @avialableReserveSeat">
+            Submit
+        </button>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        $('.number-only').on('input', function () {
+            let value = $(this).val().replace(/[^0-9]/g, '');
+            $(this).val(value === '0' ? value : value.replace(/^0/, ''));
+        });
+    });
+</script>

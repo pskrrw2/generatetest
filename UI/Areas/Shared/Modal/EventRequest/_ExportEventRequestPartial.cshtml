@@ -1,0 +1,175 @@
+﻿@using static UI.Areas.Executive.Pages.CreateRequestModel
+@model RequestModel
+@{
+    var fileName = $"{Model.RequestId}-{Model?.EventName?.Replace(" ","").Replace(".","")}-{Model?.ExecutiveName?.Replace(" ", "")}-{Model?.CreatedDate?.ToString("MM/dd/yyyy").Replace("/", "")}";
+}
+<div id="printRequestData">
+
+    <div class="d-flex justify-content-between flex-row">
+        <div>
+            <h5 class="mb-2">Event Request</h5>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="pe-4"><strong>Requested By</strong>:</td>
+                        <td>@Model?.ExecutiveName</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4"><strong>Event Name</strong>:</td>
+                        <td>@Model?.EventName</td>
+                    </tr>
+                    <tr>
+                        <td class="pe-4"><strong>Requested On</strong>:</td>
+                        <td>@Model?.CreatedDate?.ToString("MM/dd/yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
+                <img src="~/Images/@Model?.Image" class="img-fluid" alt="Image" style="height: 100px; width: 100%; border-radius: 10px;">
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-6" />
+    <div id="no-break-please">
+        <div>
+            <h5><strong>1. Tickets & Passes</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div>
+                <h6>Requested</h6>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="pe-4"><strong>Event Tickets Requested</strong>:</td>
+                            <td>@Model?.AppliedTickets</td>
+                        </tr>
+                        <tr>
+                            <td class="pe-4"><strong>Parking Passes Requested</strong>:</td>
+                            <td>@Model?.AppliedParkingPasses</td>
+                        </tr>
+                        <tr>
+                            <td class="pe-4"><strong>SRO Tickets Requested</strong>:</td>
+                            <td>@Model?.AppliedSROTicket</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h6>Approved</h6>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="pe-4"><strong>Event Tickets Approved</strong>:</td>
+                            <td>@Model?.ApprovedTickets</td>
+                        </tr>
+                        <tr>
+                            <td class="pe-4"><strong>Parking Passes Approved</strong>:</td>
+                            <td>@Model?.ApprovedParkingPasses</td>
+                        </tr>
+                        <tr>
+                            <td class="pe-4"><strong>SRO Tickets Approved</strong>:</td>
+                            <td>@Model?.ApprovedSROTickets</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr class="my-6" />
+    <div class="no-break-please">
+        <div>
+            <h5><strong>2. Food Package</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="pe-4"><strong>Package Selected</strong>:</td>
+                            <td>@Model?.PackageSelected</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr class="my-6" />
+    <div class="no-break-please">
+        <div>
+            <h5><strong>3. Attendees Detais</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div class="table-responsive border border-bottom-0 rounded" style="width:100%;">
+                <table class="print-it-bordered table m-0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Mobile Number</th>
+                            <th>Tickets</th>
+                            <th>Seat Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model?.AttendeeModels != null)
+                        {
+                            foreach (var attendee in Model.AttendeeModels)
+                            {
+                                <tr>
+                                    <td>@attendee.AttendeeName</td>
+                                    <td>@attendee.AttendeeEmail</td>
+                                    <td>@attendee.AttendeeMobileNumber</td>
+                                    <td>@attendee.AttendeeTicket</td>
+                                    <td>@attendee.AttendeeSeatType</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr class="my-6" />
+    <div class="no-break-please">
+        <div>
+            <h5><strong>4. Add-Ons Selected</strong></h5>
+        </div>
+        <div class="d-flex justify-content-between mb-6">
+            <div class="table-responsive border border-bottom-0 rounded" style="width:100%;">
+                <table class="print-it-bordered table m-0">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Cost ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model?.AddOnMasterModels != null)
+                        {
+                            foreach (var addOn in Model.AddOnMasterModels)
+                            {
+                                string quantity = addOn.Quantity != 0 ? $"(Qty : {addOn.Quantity} (Price /Each))" : string.Empty;
+                                <tr>
+                                    <td>@addOn.FoodItem</td>
+                                    <td>@addOn.Price  <div><small class="text-muted">@quantity</small></div></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex mb-4 justify-content-center">
+    <a class="btn btn-outline-secondary d-grid me-4 waves-effect print-btn jsPrintOut" id="printBtn">
+        Print
+    </a>
+    <a class="print-btn btn btn-outline-secondary d-grid waves-effect jsDownloadPdf" data-fileName="@fileName" id="downloadBtn">
+        Download
+    </a>
+</div>

@@ -1,0 +1,84 @@
+﻿@model Domain.ViewModel.MailConferenceVm
+
+@{
+    Layout = "EmailLayout.cshtml";
+}
+
+<span class="preheader">Conference Request Approved by Admin</span>
+<table role="presentation"
+       border="0"
+       cellpadding="0"
+       cellspacing="0"
+       class="main">
+    <!-- START MAIN CONTENT AREA -->
+    <tr>
+        <td class="wrapper">
+            <p>Hi @Model.ExecutiveName,</p>
+            <p>
+                Your request for conference on <b>@Model.ConferenceDate</b> has been approved by Admin. Please fill the request for your attendee details before final date.
+            </p>
+            <table role="presentation"
+                   border="0"
+                   cellpadding="0"
+                   cellspacing="0"
+                   class="main"
+                   style="margin-top: 25px;">
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px">
+                            <table role="presentation"
+                                   border="0"
+                                   cellpadding="0"
+                                   cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>Suite Approved:</strong>
+                                        </td>
+                                        <td>@Model.ConferenceName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>Conference Date:</strong>
+                                        </td>
+                                        <td>@Model.ConferenceDate</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <small>Note: The last date to fill catering and guest data is <b>@Model.ExpiredDate</b> and <b>@Model.ExpiredBeforeOneDay </b> respectively. Please fill the catering and guest data before due date.</small>
+            </p>
+            <table role="presentation"
+                   border="0"
+                   cellpadding="0"
+                   cellspacing="0"
+                   class="btn btn-primary"
+                   style="margin-top: 35px">
+                <tbody>
+                    <tr>
+                        <td align="left">
+                            <table role="presentation"
+                                   border="0"
+                                   cellpadding="0"
+                                   cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a href="@Model.UrlPath" target="_blank">Go to portal</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+
+    <!-- END MAIN CONTENT AREA -->
+</table>

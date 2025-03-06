@@ -1,0 +1,99 @@
+﻿@page "/admin/dashboard"
+@model DashboardAdminModel;
+@using Domain.Common.Const;
+@using Domain.Common.Enums
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Dashboard";
+    var ttext = string.Empty;
+    var statusName = string.Empty;
+}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div>
+            <!-- Role cards -->
+            <div class="row g-6">
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <p class="mb-0">Total @Model.EventTotal Events</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="role-heading">
+                                    <h5 class="mb-1">Current Session : @DateTimeOffset.UtcNow.Year</h5>
+                                    <a href="/admin/events">
+                                        <p class="mb-0">All Events</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <p class="mb-0">Total @Model.ExecutiveTotal Executives</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="role-heading">
+                                    <h5 class="mb-1">Executives</h5>
+                                    <a href="/admin/manage-executives">
+                                        <p class="mb-0">All Executives</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <p class="mb-0">@Model.PendingRequest Pending Requests</p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="role-heading">
+                                    <h5 class="mb-1">Requests</h5>
+                                    <a href="/admin/manage-requests">
+                                        <p class="mb-0">All Requests</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ Role cards -->
+            <!-- Order List Table -->
+            <div class="card mt-8">
+                <div class="card-datatable table-responsive">
+                    <table class="table" id="adminDatatable">
+                        <thead>
+                            <tr>
+                                <th>S. No.</th>
+                                <th>Event Name</th>
+                                <th>Executive Name</th>
+                                <th class="text-center">Requested Tickets</th>
+                                <th class="text-center">Requested Parking Passes</th>
+                                <th class="text-center">SRO Tickets</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        @await Html.PartialAsync("~/Areas/Shared/Modal/_AdminEventRequestPartial.cshtml", Model.RequestsModels)
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+
+    <div class="content-backdrop fade"></div>
+</div>

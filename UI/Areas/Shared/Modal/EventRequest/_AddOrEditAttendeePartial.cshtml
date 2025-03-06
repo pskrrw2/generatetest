@@ -1,0 +1,134 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using static UI.Areas.Executive.Pages.CreateRequestModel
+@model RequestModel
+@{
+
+    var isAdminDisabled = string.Empty;
+    var isDisabled = string.Empty;
+    var hideshow = "displayview";
+    // var totalappliedTicket = Model.AttendeeModels?.Where(x => x.RequestId == Model.RequestId)?.Select(x => x.AttendeeTicket).Sum() ?? 0;
+    // if (totalappliedTicket >= Model.ApprovedTickets && Model.IsAdmin)
+    // {
+    //     //isAdminDisabled = "disabled-input";
+    //     //hideshow = "no-displayview";
+    // }
+
+    // if (totalappliedTicket >= Model.ApprovedTickets && !Model.IsAdmin)
+    //     isDisabled = "disabled-input";
+    @if (Model.action == "View")
+    {
+        isDisabled = "disabled-input";
+        hideshow = "no-displayview";
+    }
+    int totalBothSROandTickets = (Model.ApprovedTickets ?? 0) + (Model.ApprovedSROTickets);
+}
+
+<style>
+    .no-displayview {
+        display: none !important;
+    }
+
+    .displayview {
+        display: block !important;
+    }
+
+    .disabled-input {
+        pointer-events: none;
+        filter: none;
+        opacity: 1;
+    }
+</style>
+
+<form class="needs-validation formclass jsAttendeeForm" novalidate method="post" asp-area="Executive" asp-page="/CreateOrUpdateAttendee" asp-page-handler="GuestSubmitForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="isConference" value="False" />
+    <input type="hidden" asp-for="RequestId" />
+    <input type="hidden" asp-for="IsAdmin" />
+    <input type="hidden" value="@totalBothSROandTickets" class="jsApproveTicket" />
+    <input type="hidden" asp-for="ExecutiveId"/>
+    @if (Model.action != "View")
+    {
+        <h5 class="bg-success p-2" style="--bs-bg-opacity: .5; border-radius: 10px; font-size: 15px;">You are only approved for @totalBothSROandTickets tickets.</h5>
+    }
+
+    <div class="form-repeater">
+        <div id="attendee-container" class="attendee-row" data-attendees='@Html.Raw(Json.Serialize(Model.AttendeeModels))'>
+            <!-- Dynamic attendee rows will be appended here -->
+        </div>
+
+        <span id="ticket-message" class="text-danger"></span>
+        <div class="row mb-4" style="margin-left: 0px; margin-right: 0px; justify-content: space-between;">
+            <button type="button" id="add-attendee" style="width:auto;" class="btn btn-primary jsAddAttendee @hideshow @isDisabled">
+                <i class="ri-add-line me-1"></i>
+                <span class="align-middle">Add</span>
+            </button>
+            @if (Model.action != "View")
+            {
+                <button type="submit" style="width:auto;" class="btn btn-primary btn-submit">Submit</button>
+            }
+        </div>
+    </div>
+
+
+    <template id="attendee-template">
+        <div class="col-md attendee-row" data-attendee-index="{index}">
+            <div class="card mb-6">
+                @if (Model.action != "View")
+                {
+                    <div class="card-header header-elements" style="padding: 10px 15px;">
+                        <div class="card-header-elements ms-auto">
+                            <button type="button" class="btn btn-xs btn-outline-danger delete-attendee">Delete</button>
+                        </div>
+                    </div>
+                }
+                <div class="card-body" style="padding-bottom: 0px;">
+                    <div class="row">
+                        <input type="hidden" name="attendeemodels[{index}].attendeeid" value="{attendeeid}" />
+                        <input type="hidden" name="attendeemodels[{index}].requestid" value="@Model.RequestId" />
+                        <input type="hidden" name="attendeemodels[{index}].key" class="jsHdnKey" />
+                        <input type="hidden" name="attendeemodels[{index}].iv" class="jsHdnIV" />
+                        <div class="mb-4 col-lg-6 col-xl-6 col-12">
+                            <div class="form-floating form-floating-outline @isDisabled">
+                                <input type="text" name="attendeemodels[{index}].attendeename" class="form-control jsAttendeeName" value="{attendeename}" placeholder="john doe" />
+                                <label for="form-repeater-1-1">Name</label>
+                            </div>
+                        </div>
+                        <div class="mb-4 col-lg-6 col-xl-6 col-12">
+                            <div class="form-floating form-floating-outline @isDisabled">
+                                <input type="text" name="attendeemodels[{index}].attendeeemail" class="form-control" value="{attendeeemail}" placeholder="email@example.com" />
+                                <label for="form-repeater-1-2">Email</label>
+                            </div>
+                        </div>
+                        <div class="mb-4 col-lg-6 col-xl-6 col-12">
+                            <div class="input-group input-group-merge">
+                                <span class="input-group-text">US (+1)</span>
+                                <div class="form-floating form-floating-outline @isDisabled">
+                                    <input type="text" name="attendeemodels[{index}].attendeemobilenumber" class="form-control phone-number-mask" value="{attendeemobilenumber}" placeholder="202 555 0111" />
+                                    <label for="form-repeater-1-3">Phone number</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 col-lg-3 col-xl-3 col-6">
+                            <div class="form-floating form-floating-outline @isDisabled">
+                                <input type="number" name="attendeemodels[{index}].attendeeticket" class="form-control jsAppliedTicket number-input-mask" value="{attendeeticket}" />
+                                <label for="form-repeater-1-4">Tickets</label>
+                            </div>
+                        </div>
+                        <div class="mb-4 col-lg-3 col-xl-3 col-6">
+                            <div class="form-floating form-floating-outline @isDisabled">
+                                <select name="AttendeeModels[{index}].AttendeeSeatType" class="form-select">
+                                    <option value="" {seatTypeSelected}>Select</option>
+                                    <option value="1" {seatTypeSelected1}>High Bar</option>
+                                    <option value="2" {seatTypeSelected2}>Stadium</option>
+                                    <option value="3" {seatTypeSelected3}>SRO</option>
+                                </select>
+                                <label for="form-repeater-1-4">Seat Type</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</form>

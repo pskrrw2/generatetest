@@ -1,0 +1,131 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using System.Globalization
+@using Domain.Common.Const
+@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    var datetime = Constants.ConvertUtcToPst(Model.ConferenceDate)?.ToString(" MMM dd, yyyy", CultureInfo.InvariantCulture);
+}
+<form class="needs-validation formclass" novalidate method="post" asp-area="Executive" asp-page="/CreateConferenceRequest">
+    <input type="hidden" asp-for="ConferenceId">
+    <input type="hidden" asp-for="SuiteType">
+    <input type="hidden" asp-for="ConferenceNotes">
+    <input type="hidden" asp-for="ConferenceDate">
+    <input type="hidden" asp-for="CreatedDate">
+    <input type="hidden" asp-for="ExecutiveId">
+    <div class="row g-6">
+        <div class="col-md-12">
+            <label for="approvemodal-event" class="form-label">Requested For</label>
+            <input asp-for="SuiteType" class="form-control" type="text" disabled />
+        </div>
+        <div class="col-md-6">
+            <label for="approvemodal-requestedby" class="form-label">Requested By</label>
+            <input asp-for="ExecutiveName" class="form-control" type="text" disabled />
+        </div>
+        <div class="col-md-6">
+            <label for="approvemodal-requestedon" class="form-label">Conference Date</label>
+            <input id="approvemodal-requestedon" class="form-control" type="text" value="@datetime" disabled />
+        </div>
+        <div class="col-12">
+            <div class="form-floating form-floating-outline">
+                <textarea class="form-control jsTexAreaMessage" asp-for="ConferenceNotes" rows="2" placeholder="Any note to executive" style="height: 60px;" disabled></textarea>
+                <label asp-for="ConferenceNotes">Executive Notes</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating form-floating-outline">
+                <textarea class="form-control jsTexAreaMessage" asp-for="AdminConferenceNotes" rows="2" placeholder="Any note to executive" disabled style="height: 60px;"></textarea>
+                <label asp-for="AdminConferenceNotes">Admin Notes</label>
+            </div>
+        </div>
+       @*  <div class="pt-6" style="display:flex; justify-content:center;">
+            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+        </div> *@
+    </div>
+</form>
+<div class="mt-8">
+    <div class="card-header">
+        <h5 class="card-title m-0">Conference Request activity</h5>
+    </div>
+    <div class="card-body mt-3">
+        <ul class="timeline pb-0 mb-0">
+            <li class="timeline-item timeline-item-transparent border-primary">
+                <span class="timeline-point timeline-point-primary"></span>
+                <div class="timeline-event">
+                    <div class="timeline-header mb-2">
+                        <h6 class="mb-0">Request was placed</h6>
+                        <small class="text-muted">@Constants.ConvertUtcToPst(Model.CreatedDate)?.ToString(" MMM dd, yyyy", CultureInfo.InvariantCulture) @Constants.ConvertUtcToPst(Model.CreatedDate)?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                    </div>
+                    <p class="mt-1 mb-2">
+                        Your conference request has been created successfully
+                    </p>
+                </div>
+            </li>
+            @if (Model.Status == nameof(StatusType.Rejected))
+            {
+                <li class="timeline-item timeline-item-transparent border-transparent pb-0">
+                    <span class="timeline-point timeline-point-primary"></span>
+                    <div class="timeline-event">
+                        <div class="timeline-header mb-2">
+                            <h6 class="mb-0">Rejected</h6>
+                            <small class="text-muted">@Constants.ConvertUtcToPst(Model.ApproveRejectDate)?.ToString(" MMM dd, yyyy", CultureInfo.InvariantCulture) @Constants.ConvertUtcToPst(Model.ApproveRejectDate)?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                        </div>
+                        <p class="mt-1 mb-2">
+                            Sorry your conference request has been rejected.
+                        </p>
+                    </div>
+                </li>
+            }
+            @if (Model.Status == nameof(StatusType.Approved))
+            {
+                <li class="timeline-item timeline-item-transparent border-transparent pb-0">
+                    <span class="timeline-point timeline-point-primary"></span>
+                    <div class="timeline-event">
+                        <div class="timeline-header mb-2">
+                            <h6 class="mb-0">Approved</h6>
+                            <small class="text-muted">@Constants.ConvertUtcToPst(Model.ApproveRejectDate)?.ToString(" MMM dd, yyyy", CultureInfo.InvariantCulture) @Constants.ConvertUtcToPst(Model.ApproveRejectDate)?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                        </div>
+                        <p class="mt-1 mb-2">
+                            Your conference request has been approved.
+                        </p>
+                    </div>
+                </li>
+            }
+            @if (Model.SelectedAddOnIds != null || Model.PackageSelected != null)
+            {
+                var dateAddAndPackage = Model.PackageSelected != null ? Model.PackageDate : Model.AddOnDate;
+                <li class="timeline-item timeline-item-transparent border-primary pb-0">
+                    <span class="timeline-point timeline-point-primary"></span>
+                    <div class="timeline-event">
+                        <div class="timeline-header mb-2">
+                            <h6 class="mb-0">Catering</h6>
+                            <small class="text-muted">@Constants.ConvertUtcToPst(dateAddAndPackage)?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @Constants.ConvertUtcToPst(dateAddAndPackage)?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                        </div>
+                        <p class="mt-1 mb-2">
+                            Catering has been filled.
+                        </p>
+                    </div>
+                </li>
+            }
+
+            @if (Model.AttendeeModels?.Count() > 0 && Model.AttendeeModels != null)
+            {
+                var attendeeDate = Model.AttendeeModels.Select(x => x.AttendeeDate).FirstOrDefault();
+                <li class="timeline-item timeline-item-transparent border-transparent pb-0">
+                    <span class="timeline-point timeline-point-primary"></span>
+                    <div class="timeline-event">
+                        <div class="timeline-header mb-2">
+                            <h6 class="mb-0">Guest</h6>
+                            <small class="text-muted">@Constants.ConvertUtcToPst(attendeeDate)?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @Constants.ConvertUtcToPst(attendeeDate)?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                        </div>
+                        <p class="mt-1 mb-2">
+                            Guest has been filled.
+                        </p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+

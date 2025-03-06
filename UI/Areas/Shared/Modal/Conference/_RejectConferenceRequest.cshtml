@@ -1,0 +1,50 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using System.Globalization
+@using Domain.Common.Const
+@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    var datetime = Model.ConferenceDate?.ToString(" MMM dd, yyyy", CultureInfo.InvariantCulture);
+}
+<form class="needs-validation formclass" novalidate method="post" asp-area="Executive" asp-page="/CreateConferenceRequest">
+    <input type="hidden" asp-for="Status" value="Rejected">
+    <input type="hidden" asp-for="ConferenceId">
+    <input type="hidden" asp-for="SuiteType">
+    <input type="hidden" asp-for="ConferenceNotes">
+    <input type="hidden" asp-for="ConferenceDate">
+    <input type="hidden" asp-for="CreatedDate">
+    <input type="hidden" asp-for="ExecutiveId">
+    <input type="hidden" asp-for="Action" value="reject">
+    <div class="row g-6">
+        <div class="col-md-12">
+            <label for="approvemodal-event" class="form-label">Requested For</label>
+            <input asp-for="SuiteType" class="form-control" type="text" disabled />
+        </div>
+        <div class="col-md-6">
+            <label for="approvemodal-requestedby" class="form-label">Requested By</label>
+            <input asp-for="ExecutiveName" class="form-control" type="text" disabled />
+        </div>
+        <div class="col-md-6">
+            <label for="approvemodal-requestedon" class="form-label">Conference Date</label>
+            <input id="approvemodal-requestedon" class="form-control" type="text" value="@datetime" disabled />
+        </div>
+        <div class="col-12">
+            <div class="form-floating form-floating-outline">
+                <textarea class="form-control jsTexAreaMessage" asp-for="ConferenceNotes" rows="2" placeholder="Any note to executive" style="height: 60px;" disabled></textarea>
+                <label asp-for="ConferenceNotes">Executive Notes</label>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-floating form-floating-outline">
+                <textarea class="form-control jsTexAreaMessage" asp-for="AdminConferenceNotes" rows="2" placeholder="Any note to executive" style="height: 60px;"></textarea>
+                <label asp-for="AdminConferenceNotes">Admin Notes</label>
+            </div>
+        </div>
+        <div class="pt-6" style="display:flex; justify-content:center;">
+            <button type="submit" class="btn btn-primary me-4">Reject</button>
+            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+        </div>
+    </div>
+</form>
+

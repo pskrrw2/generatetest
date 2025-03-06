@@ -1,0 +1,197 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using System.Globalization
+@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    // var submitHideshow = "displayview";
+
+    // if (Model.IsAdmin)
+    // {
+    //     submitHideshow = "no-displayview";
+    // }
+    
+}
+<style>
+    .no-displayview {
+        display: none !important;
+    }
+
+    .displayview{
+        display:block !important;
+    }
+
+    .disabled-input {
+        opacity: 1;
+    }
+</style>
+<form class="needs-validation formclass jsEventRequestForm" novalidate method="post" asp-area="Executive" asp-page="/CreateOrUpdateAttendee" asp-page-handler="SubmitForm">
+    @* <form id="jsAttendeeForm">  *@
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="isConference" value="True" />
+    <input type="hidden" asp-for="ConferenceId"/>
+    <input type="hidden" asp-for="Action" />
+    <input type="hidden" asp-for="IsAdmin" />
+     <input type="hidden" asp-for="ExecutiveId" />
+
+    @*  <div class="bs-stepper wizard-numbered mt-2">
+        <div class="bs-stepper-header">
+            <div class="step active" data-target="#request-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">01</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Request Details</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            
+            <div class="line"></div>
+            <div class="step" data-target="#package-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">02</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Food Package</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#addons-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">03</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Add-Ons</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#invitees-details">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle"><i class="ri-check-line"></i></span>
+                    <span class="bs-stepper-label">
+                        <span class="bs-stepper-number">04</span>
+                        <span class="d-flex flex-column gap-1 ms-2">
+                            <span class="bs-stepper-title">Invitees Info</span>
+                        </span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="bs-stepper-content">
+            <!-- Request Details -->
+            <div id="request-details" class="content active dstepper-block ">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Request Details</h6>
+                    <small>Overview of Created Request</small>
+                </div>
+                <div class="row g-5">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_ViewConferenceRequest.cshtml", Model)
+                    <div class="col-12 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary btn-prev" disabled>
+                            <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ri-arrow-right-line"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Food Package -->
+            <div id="package-details" class="content">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Food Package</h6>
+                    <small>Select the food package for your request</small>
+                </div>
+                <div class="row g-5">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_PackageConferenceDetails.cshtml", Model)
+                    <div class="col-12 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary btn-prev">
+                            <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next jsAttendeeNextBtn"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ri-arrow-right-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Addons -->
+            <div id="addons-details" class="content">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Add-Ons</h6>
+                    <small>If you want to choose your own catering items, select them here</small>
+                </div>
+                <div class="row g-5">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_AddonsConferenceDetails.cshtml", Model)
+                    <div class="col-12 d-flex justify-content-between">
+                        <button type="button" class="btn btn-outline-secondary btn-prev">
+                            <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-next jsAttendeeNextBtn"> <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span> <i class="ri-arrow-right-line"></i></button>
+                       
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invitees Info -->
+            <div id="invitees-details" class="content">
+                <div class="content-header mb-4">
+                    <h6 class="mb-0">Invitees Info</h6>
+                    <small>Enter invitees info here.</small>
+                </div>
+                @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_AddOrEditConferenceAttendeePartial.cshtml", Model)
+                <div class="col-12 d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary btn-prev">
+                        <i class="ri-arrow-left-line me-sm-1 me-0"></i>
+                        <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>  *@
+
+
+    <div>
+        <div class="nav-align-top mb-6">
+            <ul class="nav nav-pills mb-4 nav-fill" role="tablist" style="border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); box-shadow: 0 0.25rem 0.875rem 0 rgba(38, 43, 67, 0.16); padding: 5px;">
+                <li class="nav-item mb-1 mb-sm-0">
+                    <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#request-details" aria-controls="navs-pills-justified-home" aria-selected="true"><i class="tf-icons ri-function-line me-2"></i> Overview</button>
+                </li>
+                <li class="nav-item mb-1 mb-sm-0">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#package-details" aria-controls="navs-pills-justified-profile" aria-selected="false"><i class="tf-icons ri-restaurant-2-fill me-2"></i> Food Package</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#addons-details" aria-controls="navs-pills-justified-messages" aria-selected="false"><i class="tf-icons ri-apps-2-add-fill me-2"></i> Addons</button>
+                </li>
+                <li class="nav-item">
+                    <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#invitees-details" aria-controls="navs-pills-justified-messages" aria-selected="false"><i class="tf-icons ri-user-add-fill me-2"></i> Invitees</button>
+                </li>
+            </ul>
+            <div class="tab-content" style="box-shadow: none; border: 1px solid var(--bs-border-color);">
+                <div class="tab-pane fade show active" id="request-details" role="tabpanel">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_ViewConferenceRequest.cshtml", Model)
+                </div>
+                <div class="tab-pane fade" id="package-details" role="tabpanel">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_PackageConferenceDetails.cshtml", Model)
+                </div>
+                <div class="tab-pane fade" id="addons-details" role="tabpanel">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_AddonsConferenceDetails.cshtml", Model)
+                </div>
+                <div class="tab-pane fade" id="invitees-details" role="tabpanel">
+                    @await Html.PartialAsync("~/Areas/Shared/Modal/Conference/_AddOrEditConferenceAttendeePartial.cshtml", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+<script src="~/js/site.js" asp-append-version="true"></script>

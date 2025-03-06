@@ -1,0 +1,27 @@
+﻿@model Infrastructure.Rendering.ViewModels.CredientialsAndConfirmEmailVm
+
+@{
+    Layout = "EmailLayout.cshtml";
+}
+
+<h2>Change password</h2>
+
+Your Account has been Created , Please confirm your account by <a target="_blank" href="@Model.ConfirmEmailUrl">clicking here</a>
+<br/><br/><hr/>
+
+<div style="font-size: 11px">
+    Or you can copy and paste the URL below into your browser address bar:
+    <br/><br/>
+    <div style="font-size: 11px; width: 560px; word-wrap: break-word; font-style: italic;">
+        <a target="_blank" href="@Model.ConfirmEmailUrl">@Model.ConfirmEmailUrl</a>
+    </div>
+</div>
+<br />
+
+<h5>We are delighted to provide you with the login details necessary to access our Service. Below are your unique credentials:</h5>
+<br />
+<b>Username:</b> @Model.Username 
+<br />
+<b>Password:</b> @Model.GeneratedPassword
+<br />
+<p>For security reasons, we strongly advise you to change your password upon initial login</p>

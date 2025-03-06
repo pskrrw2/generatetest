@@ -1,0 +1,17 @@
+﻿@model Infrastructure.Rendering.ViewModels.ConfirmEmailVm
+
+@{
+    Layout = "EmailLayout.cshtml";
+}
+
+<h2>Confirm your account</h2>
+Please confirm your account by <a target="_blank" href="@Model.ConfirmEmailUrl">clicking here</a>
+<br/><br/><hr/>
+
+<div style="font-size: 11px">
+    Or you can copy and paste the URL below into your browser address bar:
+    <br/><br/>
+    <div style="font-size: 11px; width: 560px; word-wrap: break-word; font-style: italic;">
+        <a target="_blank" href="@Model.ConfirmEmailUrl">@Model.ConfirmEmailUrl</a>
+    </div>
+</div>

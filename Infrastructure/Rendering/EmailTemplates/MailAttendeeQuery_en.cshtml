@@ -1,0 +1,16 @@
+﻿@model AttendeeEmailVm;
+@using Domain.ViewModel;
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@Model.Title</title>
+</head>
+<body>
+    <div>
+        <!-- Render the raw HTML content from Quill directly -->
+        @Model.Message
+    </div>
+</body>
+</html>

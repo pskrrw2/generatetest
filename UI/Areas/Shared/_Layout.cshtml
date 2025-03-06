@@ -1,0 +1,91 @@
+﻿
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed layout-compact"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="/"
+      data-template="vertical-menu-template">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="~/favicon.svg" sizes="32x32" />
+    <link rel="icon" href="~/favicon.svg" sizes="192x192" />
+    <title>@ViewData["Title"]</title>
+    <partial name="_IncludeCss.cshtml" />
+    <!-- Include Scripts for customizer, helper, analytics, config -->
+
+    <script src="/vendor/js/helpers.js"></script>
+    <script src="/js/config.js"></script>
+</head>
+<body id="card-block">
+    <div>
+        <main role="main">
+            <div class="layout-wrapper layout-content-navbar">
+                <div class="layout-container">
+                    <partial name="_Sidebar.cshtml" />
+                    <div class="layout-page">
+                        <partial name="_Navbar.cshtml" />
+                        @RenderBody()
+                    </div>
+                </div>
+
+                <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+                <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+                <div class="drag-target"></div>
+            </div>
+        </main>
+    </div>
+    <partial name="_Modals.cshtml" />
+    <partial name="_IncludeScripts.cshtml" />
+    <partial name="_helperPartial.cshtml" />
+    @await RenderSectionAsync("Scripts", false)
+    @await Component.InvokeAsync("NToastNotify")
+    @await Component.InvokeAsync("Notyf")
+
+   @*  <div id="spinner" style="display: none; position: fixed; z-index: 999999; top: 0; right: 0; bottom: 0; left: 0; background: rgba(255, 255, 255, 0.5);">
+        <div style="position: fixed; padding:0; margin:0; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="d-flex justify-content-center">
+                <div class="sk-bounce sk-primary">
+                    <div class="sk-bounce-dot"></div>
+                    <div class="sk-bounce-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div> *@
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // List of table IDs to check
+            var tableIds = ['adminDatatable', 'matchEventTable', 'executiveDashboardTable'];
+            var tableFound = false; // Flag to track if any table is found
+
+            // Loop through the list of table IDs and check if any exist
+            tableIds.forEach(function (id) {
+                var table = document.getElementById(id);
+                if (table) {
+                    tableFound = true;
+                }
+            });
+
+            // If any table is found, show the 'ticket-display-legend' div
+            if (tableFound) {
+                var legendDiv = document.getElementById('ticket-display-legend');
+                if (legendDiv) {
+                    legendDiv.style.display = 'block'; // Show the div if any table exists
+                }
+            }
+
+            // Close button functionality to hide the toast
+            var closeButton = document.getElementById('close-toast-btn');
+            if (closeButton) {
+                closeButton.addEventListener('click', function () {
+                    var toast = document.getElementById('ticket-display-legend');
+                    if (toast) {
+                        toast.style.display = 'none'; // Hide the toast when the close button is clicked
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

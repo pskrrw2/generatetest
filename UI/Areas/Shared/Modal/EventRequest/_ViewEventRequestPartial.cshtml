@@ -1,0 +1,200 @@
+﻿@using Domain.Common.Enums
+@using Domain.Entities
+@using System.Globalization
+@using static UI.Areas.Executive.Pages.CreateRequestModel
+@model RequestModel
+@{
+    var divClass = "col-12";
+    var hideshow = "no-displayview";
+    if (Model.Status == (nameof(StatusType.Approved)) || Model.Status == (nameof(StatusType.Rejected)))
+    {
+        divClass = "col-6";
+        hideshow = "displayview";
+    }
+
+    var createdDate = Constants.ConvertUtcToPst(Model.CreatedDate)?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture);
+    var eventDate1 = Model.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture);
+
+}
+<form class="needs-validation" method="post">
+    <input type="hidden" asp-for="@Model.RequestId" class="jsHdnRequestId" />
+    <input type="hidden" asp-for="@Model.EventId" class="jsHdnEventId" />
+    @if (Model.IsAdmin)
+    {
+        <div class="col-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="approvemodal-requestedby" class="form-label">Requested By</label>
+                    <input asp-for="ExecutiveName" class="form-control" type="text" disabled />
+                </div>
+                <div class="col-md-6">
+                    <label for="approvemodal-requestedon" class="form-label">Requested On</label>
+                    <input id="approvemodal-requestedon" class="form-control" type="text" value="@createdDate" disabled />
+                </div>
+            </div>
+        </div>
+    }
+
+    
+    <div class="col-12">
+        <div class="row">
+            <div class="mb-4 @divClass">
+                <label class="form-label" for="bs-validation-even">Match/Event</label>
+                <select id="bs-validation-event" class="form-select" required asp-for="@Model.EventId" disabled>
+                    <option value="">Select Match/Event</option>
+                    <option data-divider="true">divider</option>
+                    @foreach (var matchEvent in Model.EventMatchModels!)
+                    {
+                        var eventDate = $"{@matchEvent.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture)}";
+                        <option value="@matchEvent.EventId" data-tokens="match preseason" data-subtext="@eventDate" data-avialableSeat="@matchEvent.AvailableSeat" data-availableParking="@matchEvent.AvailableParking">
+                            @matchEvent.EventName
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="mb-4 @divClass">
+                <label class="form-label" asp-for="@Model.EventDate">Event Date</label>
+                <input type="text" asp-for="@Model.EventDate" class="form-control dob-picker" value="@eventDate1" disabled />
+            </div>
+            <div class="mb-4 @divClass">
+                <label class="form-label" asp-for="@Model.AppliedTickets">Event Tickets Requested</label>
+                <input type="text" asp-for="@Model.AppliedTickets" class="form-control" disabled aria-label="Number of Event Tickets Requested" />
+            </div>
+            <div class="mb-4 @divClass @hideshow">
+                <label class="form-label" asp-for="@Model.ApprovedTickets">Event Tickets Approved</label>
+                <input type="text" asp-for="@Model.ApprovedTickets" class="form-control" disabled aria-label="Number of Event Tickets Approved" />
+            </div>
+        </div>
+        <div class="mb-4">
+            <label class="form-label" asp-for="@Model.SROTickets"></label>
+            @Html.DropDownListFor(x => x.SROTickets, Html.GetEnumSelectList<SROType>(), "Select", new { @class = "form-select", @disabled = "disabled" })
+        </div>
+        <div class="row">
+            <div class="mb-4 @divClass">
+                <label class="form-label" asp-for="@Model.AppliedParkingPasses">Parking Passes Requested</label>
+                <input type="text" asp-for="@Model.AppliedParkingPasses" class="form-control" disabled aria-label="Number of Parking Passes Requested" />
+            </div>
+            <div class="mb-4 @divClass @hideshow">
+                <label class="form-label" asp-for="@Model.ApprovedParkingPasses">Parking Passes Approved</label>
+                <input type="text" asp-for="@Model.ApprovedParkingPasses" class="form-control" disabled aria-label="Number of Parking Passes Approved" />
+            </div>
+
+            @if (Model.SROTickets == SROType.Yes)
+            {
+                <div class="mb-4 @divClass">
+                    <label class="form-label" asp-for="@Model.AppliedSROTicket">SRO Tickets Requested</label>
+                    <input type="text" asp-for="@Model.AppliedSROTicket" class="form-control" disabled aria-label="Number of SRO Tickets Requested" />
+                </div>
+                <div class="mb-4 @divClass @hideshow">
+                    <label class="form-label" asp-for="@Model.ApprovedSROTickets">SRO Tickets Approved </label>
+                    <input type="text" asp-for="@Model.ApprovedSROTickets" class="form-control" disabled aria-label="Number of SRO Tickets Approved" />
+                </div>
+            }
+            <div class="mb-4 @divClass">
+                <label class="form-label">Excutive Notes</label>
+                <textarea class="form-control h-px-75" asp-for="@Model.ExecutiveNotes" rows="3" disabled></textarea>
+            </div>
+            <div class="mb-4 @divClass @hideshow">
+                <label class="form-label">Admin Notes</label>
+                <textarea class="form-control h-px-75" asp-for="@Model.AdminNotes" rows="3" disabled></textarea>
+            </div>
+        </div>
+    </div>
+    @* <div class="mb-4">
+    <div class="form-check mt-2">
+    <input class="form-check-input" type="checkbox" asp-for="@Model.CateringAndDrinks" disabled />
+    <label asp-for="@Model.CateringAndDrinks" class="form-check-label">
+    @Html.DisplayNameFor(m => m.CateringAndDrinks)
+    </label>
+    </div>
+    </div> *@
+</form>
+<div class="mt-8">
+    <div class="card-header">
+        <h5 class="card-title m-0">Request activity</h5>
+    </div>
+    <div class="card-body mt-3">
+        <ul class="timeline pb-0 mb-0">
+            <li class="timeline-item timeline-item-transparent border-primary">
+                <span class="timeline-point timeline-point-primary"></span>
+                <div class="timeline-event">
+                    <div class="timeline-header mb-2">
+                        <h6 class="mb-0">Request was placed</h6>
+                        <small class="text-muted">@createdDate @Constants.ConvertUtcToPst(Model.CreatedDate)?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                    </div>
+                    <p class="mt-1 mb-2">
+                        Your request has been created successfully.
+                    </p>
+                </div>
+            </li>
+            @if (Model.Status == nameof(StatusType.Rejected))
+            {
+                var rejectDateTime = Constants.ConvertUtcToPst(Model.ApproveRejectDate);
+
+                <li class="timeline-item timeline-item-transparent border-primary pb-0">
+                    <span class="timeline-point timeline-point-primary"></span>
+                    <div class="timeline-event">
+                        <div class="timeline-header mb-2">
+                            <h6 class="mb-0">Rejected</h6>
+                            <small class="text-muted">@rejectDateTime?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @rejectDateTime?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                        </div>
+                        <p class="mt-1 mb-2">
+                            Sorry your request has been rejected.
+                        </p>
+                    </div>
+                </li>
+            }
+            @if (Model.Status == nameof(StatusType.Approved))
+            {
+                var approveDateTime = Constants.ConvertUtcToPst(Model.ApproveRejectDate);
+
+                <li class="timeline-item timeline-item-transparent border-primary pb-0">
+                    <span class="timeline-point timeline-point-primary"></span>
+                    <div class="timeline-event">
+                        <div class="timeline-header mb-2">
+                            <h6 class="mb-0">Approved</h6>
+                            <small class="text-muted">@approveDateTime?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @approveDateTime?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                        </div>
+                        <p class="mt-1 mb-2">
+                            Your request has been approved.
+                        </p>
+                    </div>
+                </li>
+
+                @if (Model.SelectedAddOnIds != null || Model.PackageSelected != null)
+                {
+                    var dateAddAndPackage = Model.PackageSelected != null ? Constants.ConvertUtcToPst(Model.PackageDate) : Constants.ConvertUtcToPst(Model.AddOnDate);
+                    <li class="timeline-item timeline-item-transparent border-primary pb-0">
+                        <span class="timeline-point timeline-point-primary"></span>
+                        <div class="timeline-event">
+                            <div class="timeline-header mb-2">
+                                <h6 class="mb-0">Catering</h6>
+                                <small class="text-muted">@dateAddAndPackage?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @dateAddAndPackage?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                            </div>
+                            <p class="mt-1 mb-2">
+                                Catering has been filled.
+                            </p>
+                        </div>
+                    </li>
+                }
+
+                @if (Model.AttendeeModels?.Count() > 0 &&  Model.AttendeeModels != null)
+                {
+                    var attendeeDate = Constants.ConvertUtcToPst(Model.AttendeeModels.Select(x => x.AttendeeDate).FirstOrDefault());
+                    <li class="timeline-item timeline-item-transparent border-transparent pb-0">
+                        <span class="timeline-point timeline-point-primary"></span>
+                        <div class="timeline-event">
+                            <div class="timeline-header mb-2">
+                                <h6 class="mb-0">Guest</h6>
+                                <small class="text-muted">@attendeeDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture) @attendeeDate?.ToString("hh:mm tt", CultureInfo.InvariantCulture) </small>
+                            </div>
+                            <p class="mt-1 mb-2">
+                                Guest has been filled.
+                            </p>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>

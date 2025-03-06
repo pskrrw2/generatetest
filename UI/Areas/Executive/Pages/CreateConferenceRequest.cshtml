@@ -1,0 +1,208 @@
+﻿@page "/create-conference-request"
+@model CreateConferenceRequestModel
+@using Domain.Common.Const;
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Create Conference Requests";
+    if (Model.ConferenceId is 0)
+        Model.ConferenceModels.Action = "add";
+    else
+        Model.ConferenceModels.Action = "edit";
+}
+<!-- Content wrapper -->
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div>
+            <div class="card mb-6">
+                <div class="card-header d-flex flex-wrap justify-content-between gap-4">
+                    <div class="d-flex justify-content-md-end align-items-center gap-6 flex-wrap">
+                        <a href="/conference-request" type="button"
+                           class="btn btn-primary">
+                            All Conference Request
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body mt-1">
+                    <div class="row gy-2 mb-2">
+                        <div class="text-center mb-2">
+                            <h4 class="address-title mb-2">
+                                Conference Request
+                            </h4>
+                            <p class="address-subtitle">
+                                Create request for the conference room
+                            </p>
+                        </div>
+                        <form class="needs-validation" novalidate method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            @Html.HiddenFor(x => x.ConferenceModels.ConferenceId, new { @class = "form-control jsHdnConferenceId" })
+                            @Html.HiddenFor(x => x.ConferenceModels.ExecutiveId, new { @class = "form-control" })
+                            @Html.HiddenFor(x => x.ConferenceModels.Action, new { @class = "form-control" })
+                            <div class="row mb-8">
+                                <div class="col-md mb-md-0 mb-5">
+                                    <div class="form-check custom-option custom-option-image custom-option-icon pb-2">
+                                        <label class="form-check-label custom-option-content"
+                                               for="IsActive_Response_OurSuite">
+                                            <span class="custom-option-body">
+                                                <img src="~/img/showcase/your-suite.webp"
+                                                     alt="radioImg"
+                                                     class="mb-4" />
+                                                <span style="font-size: 1.1rem;" class="custom-option-title mb-2">
+                                                    <strong>
+                                                        Our Suite<span style="font-weight: 200; font-size: 0.8rem; color:var(--bs-primary);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="You can book this suite as is on non-event days. Any additional AV, F&B, etc. would be an added cost.">
+                                                            Features?
+                                                        </span>
+                                                    </strong>
+                                                </span>
+                                                <div class="row mb-4" style="border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); margin: 10px; padding: 10px;">
+                                                    <div class="col-4 d-flex justify-content-center" style="border-right: 1px solid var(--bs-border-color);">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.OurSuiteConference</h6>
+                                                                <small><strong>Capacity</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 d-flex justify-content-center" style="border-right: 1px solid var(--bs-border-color);">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.OurSuiteConferenceLocation</h6>
+                                                                <small><strong>Location</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 d-flex justify-content-center">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.OurSuiteConferenceQty</h6>
+                                                                <small><strong>Quantity</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <input asp-for="ConferenceModels.SuiteType" type="radio" value="Our Suite" class="form-check-input mb-2" id="IsActive_Response_OurSuite" checked />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md mb-md-0 mb-5">
+                                    <div class="form-check custom-option custom-option-image custom-option-icon pb-2">
+                                        <label class="form-check-label custom-option-content"
+                                               for="IsActive_Response_StageSuite">
+                                            <span class="custom-option-body">
+                                                <img src="~/img/showcase/stage-suite.webp"
+                                                     alt="radioImg"
+                                                     class="mb-4" />
+                                                <span style="font-size: 1.1rem;" class="custom-option-title mb-2">
+                                                    <strong>Stage Suite</strong><span style="font-weight: 200; font-size: 0.8rem; color:var(--bs-primary);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Not a fully equipped conference room, however there is space to combine furniture to a more conference setting. Mersive isn't available in the stage suites, so a SmartBoard TV is brought to the suite for AV needs at no additional cost.">
+                                                        Features?
+                                                    </span>
+                                                </span>
+                                                <div class="row mb-4" style="border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); margin: 10px; padding: 10px;">
+                                                    <div class="col-4 d-flex justify-content-center" style="border-right: 1px solid var(--bs-border-color);">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.StageSuiteConference</h6>
+                                                                <small><strong>Capacity</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 d-flex justify-content-center" style="border-right: 1px solid var(--bs-border-color);">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.StageSuiteConferenceLocation</h6>
+                                                                <small><strong>Location</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 d-flex justify-content-center">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.StageSuiteConferenceQty</h6>
+                                                                <small><strong>Quantity</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <input asp-for="ConferenceModels.SuiteType" type="radio" value="Stage Suite" class="form-check-input mb-2" id="IsActive_Response_StageSuite" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md mb-md-0 mb-5">
+                                    <div class="form-check custom-option custom-option-image custom-option-icon pb-2">
+                                        <label class="form-check-label custom-option-content" for="IsActive_Response_OwnersConferenceSpace">
+                                            <span class="custom-option-body">
+                                                <img src="~/img/showcase/owners-suite.webp"
+                                                     alt="radioImg"
+                                                     class="mb-4" />
+                                                <span style="font-size: 1.1rem;" class="custom-option-title mb-2">
+                                                    <strong> Owners Conference Space</strong><span style="font-weight: 200; font-size: 0.8rem; color:var(--bs-primary);" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Only fully equipped conference room in the stadium.">
+                                                        Features?
+                                                    </span>
+                                                </span>
+                                                <div class="row mb-4" style="border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius); margin: 10px; padding: 10px;">
+                                                    <div class="col-4 d-flex justify-content-center" style="border-right: 1px solid var(--bs-border-color);">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.OwnerSuiteConference</h6>
+                                                                <small><strong>Capacity</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 d-flex justify-content-center" style="border-right: 1px solid var(--bs-border-color);">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.OwnerSuiteConferenceLocation</h6>
+                                                                <small><strong>Location</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 d-flex justify-content-center">
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <h6 class="mb-0 text-nowrap fw-normal"> @Constants.OwnerSuiteConferenceQty</h6>
+                                                                <small><strong>Quantity</strong></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </span>
+                                            <input asp-for="ConferenceModels.SuiteType" type="radio" value="Owners Conference Space" class="form-check-input mb-2" id="IsActive_Response_OwnersConferenceSpace" />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-4">
+                                <input type="date" asp-for="ConferenceModels.ConferenceDate" class="form-control dob-picker" placeholder="YYYY-MM-DD" id="basic-default-dob" required />
+                                <label for="multicol-birthdate">Date</label>
+                            </div>
+                            <div class="form-floating form-floating-outline mb-6">
+                                <textarea asp-for="ConferenceModels.ConferenceNotes" class="form-control h-px-75" rows="3" placeholder="Write your optional notes here"></textarea>
+                                <label for="bs-validation-bio">Notes</label>
+                            </div>
+                            <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <!-- Footer -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+@section Scripts {
+    <script>
+        EventPage.init();
+    </script>
+}

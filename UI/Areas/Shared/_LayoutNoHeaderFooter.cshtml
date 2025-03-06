@@ -1,0 +1,53 @@
+﻿@using Application.BlobStorage;
+@inject IBlobStorageService BlobStorageService
+
+@{
+    var videoUrl = await BlobStorageService.DisplayVideoUrl(Constants.BlobVideo);
+}
+<!DOCTYPE html>
+<html lang="en"
+      class="light-style layout-navbar-fixed layout-menu-fixed  layout-compact"
+      dir="ltr" data-theme="theme-default" data-assets-path='/'
+      data-template='vertical-menu-template'>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="~/favicon.svg" sizes="32x32" />
+    <link rel="icon" href="~/favicon.svg" sizes="192x192" />
+    <title>@ViewData["Title"] </title>
+
+    <partial name="_IncludeCss.cshtml" />
+    <script src="/vendor/js/helpers.js"></script>
+    <script src="/js/config.js"></script>
+    <style>
+        body {
+            background: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Content -->
+
+    <div class="authentication-wrapper authentication-cover">
+        <div class="authentication-inner row m-0" style="min-height: 100vh; position: relative;">
+            <!-- /Left Section -->
+            <div class="d-none d-lg-flex col-lg-7 col-xl-8 align-items-center justify-content-center p-12 pb-2 video-background">
+                <video autoplay muted loop playsinline preload="auto" loading="lazy" id="bg-video">
+
+                    <source src="@videoUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <!-- /Left Section -->
+            @RenderBody()
+        </div>
+    </div>
+    <partial name="_IncludeScripts.cshtml" />
+
+    @await RenderSectionAsync("Scripts", false)
+    @await Component.InvokeAsync("NToastNotify")
+    @await Component.InvokeAsync("Notyf")
+</body>
+</html>

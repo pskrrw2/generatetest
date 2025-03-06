@@ -1,0 +1,30 @@
+﻿@model Infrastructure.Rendering.ViewModels.OtpMailVm;
+@{
+    Layout = "EmailLayout.cshtml";
+}
+
+<table role="presentation"
+       border="0"
+       cellpadding="0"
+       cellspacing="0"
+       class="main">
+    <!-- START MAIN CONTENT AREA -->
+    <tr>
+        <td class="wrapper">
+            <p>Hi Admin,</p>
+            <p>
+                Your OTP to login your account:
+            </p>
+
+            <center>
+                <strong style="font-size:200%;color:#eb2127">@Model.OtpCode</strong>
+            </center>
+            <br />
+            <br />
+
+            <p>
+                If you did not request this code, it is possible that someone else is trying to gain access to your account. Do not forward or give this code to anyone.
+            </p>
+        </td>
+    </tr>
+</table>

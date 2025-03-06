@@ -1,0 +1,434 @@
+﻿@using Domain.Entities
+@using static UI.Areas.Executive.Pages.CreateConferenceRequestModel
+@model ConferenceModel
+@{
+    var isUpcomingConfernce = DateTimeOffset.UtcNow.AddDays(5) < Model.ConferenceDate;
+    var disableyes = string.Empty;
+    if (Model.IsAdmin || !isUpcomingConfernce || Model.Action == "View")
+    {
+        disableyes = "disabled-input";
+    }
+}
+<style>
+    .disabled-input {
+        pointer-events: none;
+        filter: none;
+    }
+</style>
+<!-- Basic Custom Radios -->
+<div class="col-xl-12">
+    <div class="card" style="box-shadow: none;">
+        <h5 class="card-header" style="padding: 10px;">Select Food Package</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md mb-md-0 mb-5" style="padding-left: 5px;padding-right: 5px;">
+                    <div class="form-check custom-option custom-option-basic @disableyes">
+                        <label class="form-check-label custom-option-content"
+                               for="IsActive_Response_Package1">
+                            <input asp-for="@Model.PackageSelected" type="radio" value="Package 1" class="form-check-input" style="margin-left: 0px; margin-inline-start: 0px;" id="IsActive_Response_Package1" />
+                            @* <input name="customRadioTemp-1"  class="form-check-input" type="radio"  value="Package 1"  id="customRadioTemp1"  checked /> *@
+                            <span class="custom-option-header" style="padding: 0px 10px;">
+                                <span class="h6 mb-0">Package 1</span>
+                            </span>
+                            <span class="custom-option-body">
+                                <!-- List group with Badges & Pills -->
+                                <div class="col-12 mt-4">
+                                    <small class="text-light fw-medium">Food Items</small>
+                                    <div class="demo-inline-spacing mt-4 mb-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Mellisa's Seasonal California Fruit
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(V)(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                   Hummus Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Warm Pretzel Bites
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Chips & Salsa
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(V)(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Herb Roasted Chicken Sandwich <div><small class="text-muted"></small></div>
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    City Link Hot Dogs
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Chicken Caeser Salad
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Cheeseburger Sliders
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Wings
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Assorted Cookie Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Decadent Brownie Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ List group with Badges & Pills -->
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md mb-md-0 mb-5" style="padding-left: 5px;padding-right: 5px;">
+                    <div class="form-check custom-option custom-option-basic @disableyes">
+                        <label class="form-check-label custom-option-content"
+                               for="IsActive_Response_Package2">
+                            <input asp-for="@Model.PackageSelected" type="radio" value="Package 2" style="margin-left: 0px; margin-inline-start: 0px;" class="form-check-input" id="IsActive_Response_Package2" />
+                            <span class="custom-option-header" style="padding: 0px 10px;">
+                                <span class="h6 mb-0">Package 2</span>
+                            </span>
+                            <span class="custom-option-body">
+                                <!-- List group with Badges & Pills -->
+                                <div class="col-12 mt-4">
+                                    <small class="text-light fw-medium">Pre-Set</small>
+                                    <div class="demo-inline-spacing mt-4 mb-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Mellisa's Seasonal Fruit Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(V)(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Wild Mushroom Arancinis
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Charred Scallion Dip
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Crab Roll
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Baby Gem Salad
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    California Cheese & Charcuterie <div><small class="text-muted"></small></div>
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Pretzel Dog
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <small class="text-light fw-medium">Post Guest Arrival</small>
+                                    <div class="demo-inline-spacing mt-4 mb-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Grilled Jidori Chicken Yakitori <div><small class="text-muted"></small></div>
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Sushi
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <small class="text-light fw-medium">By Halftime</small>
+                                    <div class="demo-inline-spacing mt-4 mb-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Grilled Tomahawk Steaks <div><small class="text-muted"></small></div>
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Apple Slab Pie
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Decadent Brownie Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ List group with Badges & Pills -->
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md mb-md-0 mb-5" style="padding-left: 5px;padding-right: 5px;">
+                    <div class="form-check custom-option custom-option-basic @disableyes">
+                        <label class="form-check-label custom-option-content"
+                               for="IsActive_Response_Package3">
+                            <input asp-for="@Model.PackageSelected" type="radio" value="Package 3" style="margin-left: 0px; margin-inline-start: 0px;" class="form-check-input" id="IsActive_Response_Package3" />
+                            <span class="custom-option-header" style="padding: 0px 10px;">
+                                <span class="h6 mb-0">Package 3</span>
+                            </span>
+                            <span class="custom-option-body">
+                                <!-- List group with Badges & Pills -->
+                                <div class="col-12 mt-4">
+                                    <small class="text-light fw-medium">Food Items</small>
+                                    <div class="demo-inline-spacing mt-4 mb-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Mellisa's Seasonal California Fruit
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(V)(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                   Poke
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Hummus Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                   Housemade Kettle Chips
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(V)(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Charred Cauliflower Salad <div><small class="text-muted"></small></div>
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(V)(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                   California Cheese & Charcuterie
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Shrimp Cocktail
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(GF)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Truffle Garlic Knots
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Sticky Pork Belly
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Herb Roasted Ribeye
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    City Link Hot Dogs
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted"></small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                    Assorted Cookie Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="col-8">
+                                                   Decadent Brownie Platter
+                                                </div>
+                                                <div class="col-4" style="text-align: end;">
+                                                    <small class="text-muted">(VG)</small>
+                                                    <span class="badge rounded-pill bg-label-primary"></span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/ List group with Badges & Pills -->
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* </form> *@
+<!-- /Basic Custom Radios -->

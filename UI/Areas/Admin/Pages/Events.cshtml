@@ -1,0 +1,86 @@
+﻿@page "/admin/events"
+@using System.Globalization
+@model EventsModel
+@{
+    Layout = Layouts.Default;
+    ViewData["Title"] = "Events";
+    int i = 1;
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card mt-4">
+            <div class="card-datatable table-responsive">
+                <table class="table" id="matchEventTable">
+                    <thead>
+                        <tr>
+                            <th>S. No.</th>
+                            <th>Event Name</th>
+                            <th>Event Venue</th>
+                            <th>Event Date</th>
+                            <th class="text-center">Is Active</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.MatchEvent != null)
+                        {
+                            foreach (var items in Model.MatchEvent)
+                            {
+                                var dateExpireBackground = items.EventDate?.Date <= DateTimeOffset.UtcNow.Date ? "color:rgb(0, 128, 0)" : "color:rgb(255, 0, 0)";
+
+                                var editEventPage = Url.Page(PageNames.CreateorUpdateEvent, new
+                                {
+                                    area = WebAreas.Administration,
+                                    eventId = items.EventId
+                                });
+
+                                var deleteEventHandler = Url.PageLink(PageNames.MatchEvents, "DeleteEvent", new
+                                {
+                                    area = WebAreas.Administration,
+                                    eventId = items.EventId
+                                });
+
+                                var IsActiveHandler = Url.PageLink(PageNames.MatchEvents, "IsActiveUser", new
+                                {
+                                    area = WebAreas.Administration,
+                                });
+
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>@items.EventName</td>
+                                    <td>@items.EventVenue</td>
+                                    <td style="@dateExpireBackground">@items.EventDate?.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture)</td>
+                                    <td>
+                                        <div class="form-check form-switch justify-content-center d-flex">
+                                            <input type="checkbox" asp-for="@items.IsActive" data-id="@items.EventId" class="form-check-input jsIsActiveEvent btn-card-block-spinner" style="width:35px;" data-action="@IsActiveHandler" />
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="@editEventPage" title="Edit" class="btn btn-secondary btn-sm">
+                                            <i class="ri-edit-line icon-blue" title="Edit"></i>
+                                        </a>
+                                        @* <button type="button" title="Delete" data-action="@deleteEventHandler" class="btn btn-primary btn-sm jsDeleteEvent">
+                                <i class="ri-delete-bin-line icon-white" title="Delete"></i>
+                                </button> *@
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+    <partial name="~/Areas/Shared/_Footer.cshtml" />
+
+    <div class="content-backdrop fade"></div>
+</div>
+
+@section Scripts {
+    <script>
+        EventPage.init();
+    </script>
+}
